@@ -1,4 +1,4 @@
-pragma solidity ^0.5.2;
+pragma solidity ^0.5.5;
 
 // Importing OpenZeppelin's SafeMath Implementation
 /*
@@ -20,12 +20,19 @@ a / b becomes a.div(b)
 //import 'https://github.com/OpenZeppelin/zeppelin-solidity/contracts/math/SafeMath.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
-// based on https://medium.com/coinmonks/creating-smart-contracts-with-smart-contract-d54e21d26e00
+
+/*
+ based on 
+    https://medium.com/@i6mi6/solidty-smart-contracts-design-patterns-ecfa3b1e9784
+    https://ethereum.stackexchange.com/questions/13415/deploy-contract-from-contract-in-solidity
+*/
 contract FleaMarket {
 	
-	SafeRemotePurchase[] public  contracts;
-
-	uint public nextId = 1;  
+	//mapping key to address
+	mapping(string => address) elements;
+    string[] keys;
+    
+	address public lastContractAddress;
 
     event newPurchaseContract(
         address contractAddress
@@ -34,49 +41,64 @@ contract FleaMarket {
 	constructor() public
 	{}
 
-	function getAllContracts() public view returns(SafeRemotePurchase[] memory)
-	{
-		return contracts;
-	}
-	
-	function getContractById(uint id) public view returns(SafeRemotePurchase)
-	{
-		uint _id = find(id);
-		return contracts[_id];
-	}
 
 	// deploy a new purchase contract
-	function newPurchase(string memory title, string memory contractHash) public payable returns(address)
+	function createPurchaseContract(string memory key, string memory title, string memory contractHash) 
+	        public payable returns(bool createResult)
 	{
-		SafeRemotePurchase c = new SafeRemotePurchase(msg.sender, msg.value, nextId, title, contractHash);
-		contracts.push(c);
-		nextId++;
-		address lastContractAddress = address(c);
+		/*
+		  When a new contract is created with the 'new' keyword, for example 
+		     Token token = new Token;
+		     
+          This line fires a transaction which deploys the child Token contract 
+          and returns the address for that contract.
+          In Solidity contracts are directly convertible to addresses. 
+          The newer compiler wants to see that explicitly, like return address(token);
+		*/
+		
+		SafeRemotePurchase c = new SafeRemotePurchase(msg.sender, msg.value, key, title, contractHash);
+		
+		/*
+		checking that the key is not taken already 
+		address(0) is the same as "0x0", an uninitialized! address.
+		*/
+		bool taken = elements[key] != address(0);
+		
+		require( !taken, "The key has been already taken");
+    	
+		keys.push(key);
+		
+		lastContractAddress = address(c);
+		
+		elements[key] = lastContractAddress;
+
 		emit newPurchaseContract(lastContractAddress);
 	    
-		return lastContractAddress;
+		return true;
 	}
-
 	
 	
-	function find(uint id) internal view returns(uint){
-        
-        for(uint i = 0; i < contracts.length; i++){
-            
-            //based on https://ethereum.stackexchange.com/questions/38317/access-to-public-variable-from-other-contract/38319
-            //notice that to get the value of id we call its getter function id() 
-            //!!!! which is automatically generated due to the public keyword.
-            //uint temp = contracts[i].id();
-            
-            if(contracts[i].id() == id){
-                return i;  //return the position of the element in the array
-            }
-        }
-
-        revert('Contract does not exists!');
+	function getKeyCount() public view returns (uint elementsCount) {
+       return keys.length;
+    }
     
-	}
-
+    function getElementByIndex(uint index) public view
+		returns(address contractAddress) {
+        
+       require( index < keys.length, "Invalid index");
+       return elements[keys[index]];
+    }
+    
+    function getElementByKey(string memory key)  public view
+		returns(address contractAddress) {
+      
+       bool exists = elements[key] != address(0);
+		
+	   require(exists, "No asset data exists for this key");
+       
+       return elements[key];
+    }
+	
 }
 
 
@@ -86,13 +108,13 @@ contract SafeRemotePurchase {
     using SafeMath for uint256;
     
     address payable private seller;
-    uint public id;
+    address payable public buyer;
+
+    string public key;  //unique string identifier
     string public title;
     uint public price;
     string public ipfsHash;
     
-    address payable public buyer;
-
     enum State { Created, Locked, Inactive }
     State public state;
 
@@ -103,12 +125,12 @@ contract SafeRemotePurchase {
     constructor(
         address payable _contractSeller, 
         uint _price,
-        uint _id,
+        string memory _key,
         string memory _title,
         string memory _contractHash) public payable {
         
         seller = _contractSeller;
-        id = _id;
+        key = _key;
         ipfsHash = _contractHash;
         title = _title;
         price = _price.div(2);
@@ -139,10 +161,10 @@ contract SafeRemotePurchase {
     event PurchaseConfirmed();
     event ItemReceived();
 
-    /// Confirm the purchase as buyer.
-    /// Transaction has to include `2 * value` ether.
-    /// The ether will be locked until confirmReceived
-    /// is called.
+    // Confirm the purchase as buyer.
+    // Transaction has to include `2 * value` ether.
+    // The ether will be locked until confirmReceived
+    // is called.
     function buyerConfirmPurchase() public inState(State.Created)
         condition(msg.value == (price.mul(2)))
         payable
@@ -152,28 +174,19 @@ contract SafeRemotePurchase {
         state = State.Locked;
     }
 
-    /// Confirm that you (the buyer) received the item.
-    /// This will release the locked ether.
+    // Confirm that you (the buyer) received the item.
+    // This will release the locked ether.
     function buyerConfirmReceived() public onlyBuyer
         inState(State.Locked)
     {
         emit ItemReceived();
-        
-        // .. reserch this notice...
-        // It is important to change the state first because
-        // otherwise, the contracts called using `send` below
-        // can call in again here.
         state = State.Inactive;
-
-        // NOTE: This actually allows both the buyer and the seller to
-        // block the refund - the withdraw pattern should be used.
-
+        
         buyer.transfer(price);
         seller.transfer(address(this).balance);
     }
     
-    // The seller changed his mind
-    // and does 't want to seller
+    // The seller has changed his mind and does not want to sell the item
     // Abort the purchase and reclaim the ether.
     // Can only be called by the seller if the contract is Inactive
     function abortBySeller() public onlySeller
@@ -181,10 +194,11 @@ contract SafeRemotePurchase {
     {
         emit Aborted();
         state = State.Inactive;
+        
         seller.transfer(address(this).balance);
     }
 
-    //'view' means does not modify the storadge of the smart contract
+    //get balance of the contract
     function balanceOf() view public returns(uint){
         return address(this).balance;
     }

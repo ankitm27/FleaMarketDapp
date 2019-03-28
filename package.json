@@ -2,7 +2,7 @@
   "name": "fleamarketdapp",
   "version": "1.0.0",
   "description": "",
-  "author": "Alex Yevseyevich",
+  "author": "Alex Yevseyevich", 
   "dependencies": {
     "fs": "0.0.1-security",
     "openzeppelin-solidity": "^2.2.0",
