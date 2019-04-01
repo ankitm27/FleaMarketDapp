@@ -56,7 +56,7 @@ contract FleaMarket {
           The newer compiler wants to see that explicitly, like return address(token);
 		*/
 		
-		SafeRemotePurchase c = new SafeRemotePurchase(msg.sender, msg.value, key, title, contractHash);
+		SafeRemotePurchase c = (new SafeRemotePurchase).value(msg.value)(msg.sender, key, title, contractHash);
 		
 		/*
 		checking that the key is not taken already 
@@ -109,10 +109,9 @@ contract SafeRemotePurchase {
     
     address payable private seller;
     address payable public buyer;
-
+    uint public price;
     string public key;  //unique string identifier
     string public title;
-    uint public price;
     string public ipfsHash;
     
     enum State { Created, Locked, Inactive }
@@ -124,21 +123,19 @@ contract SafeRemotePurchase {
     // Check via multiplication that it wasn't an odd number.
     constructor(
         address payable _contractSeller, 
-        uint _price,
         string memory _key,
         string memory _title,
         string memory _contractHash) public payable {
-        
         seller = _contractSeller;
         key = _key;
         ipfsHash = _contractHash;
         title = _title;
-        price = _price.div(2);
+        price = msg.value.div(2);
         require(price.mul(2) == msg.value, "Value has to be even.");
     }
 
     modifier condition(bool _condition) {
-        require(_condition);
+        require(_condition, "Condition is false");
         _;
     }
 
@@ -183,7 +180,7 @@ contract SafeRemotePurchase {
         state = State.Inactive;
         
         buyer.transfer(price);
-        seller.transfer(address(this).balance);
+        seller.transfer(balanceOf());
     }
     
     // The seller has changed his mind and does not want to sell the item
@@ -195,7 +192,7 @@ contract SafeRemotePurchase {
         emit Aborted();
         state = State.Inactive;
         
-        seller.transfer(address(this).balance);
+        seller.transfer(balanceOf());
     }
 
     //get balance of the contract

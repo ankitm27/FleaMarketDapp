@@ -88,7 +88,9 @@ module.exports = {
     */
     ropsten: {
       provider: function() {
-
+        //using require to read a json file
+        //based on https://stackoverflow.com/questions/35389060/read-json-file-content-with-require-vs-fs-readfile
+        
         const privateKey = require("./secret").mnemonic;
         //Your project id, which you would have copied from Infura.io.
         const infuraProjectId = require("./secret").infuraProjectToken;
