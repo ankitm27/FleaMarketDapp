@@ -4,15 +4,12 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <!--The content below is only a placeholder and can be replaced.-->
-    <div style="text-align:center">
-      <h1>
-        🐺 {{greeting}}!
-      </h1>
-    </div>
-    <router-outlet></router-outlet>
+    <div>
+      <app-nav></app-nav>
+    </div>   
   `,
   styles: []
 })
 export class AppComponent {
-  greeting = 'Hello Poppy';
+  
 }
