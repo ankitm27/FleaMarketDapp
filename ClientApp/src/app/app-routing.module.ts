@@ -1,10 +1,20 @@
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { DashboardComponent } from './core/components/dashboard/dashboard.component';
+import { NotFoundPageComponent } from './core/containers/not-found-page.component';
 
-const routes: Routes = [];
+export const routes: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+  },
+  { path: '**', component: NotFoundPageComponent },
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
