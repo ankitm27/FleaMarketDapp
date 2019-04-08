@@ -5,17 +5,16 @@
 .dashboard-card {
   position: absolute;
   top: 12px;
-  left: 12px;
-  right: 12px;
+  left: 120px;
+  right: 120px;
   bottom: 12px;
 }
 
+/*
 .more-button {
   position: absolute;
   top: 5px;
   right: 10px;
 }
+*/
 
-.dashboard-card-content {
-  text-align: center;
-}
