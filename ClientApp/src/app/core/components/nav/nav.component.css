@@ -28,4 +28,7 @@
   z-index: 1;
 }
 
+.mat-toolbar img {
+  margin-right: 6px;
+}
 
