@@ -3,6 +3,13 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+export interface INavInterface {
+  link: string;
+  name: string;
+  img_src: string;
+  exact: boolean;
+}
+
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -16,5 +23,27 @@ export class NavComponent {
     );
 
   constructor(private breakpointObserver: BreakpointObserver) {}
+
+  nav:  INavInterface[]  = [
+        {
+            link: '/ebipps-dashboard/tmpl/ConformNotConform',
+            name: 'Home',
+            img_src: './assets/img/home-24.png',
+            exact: true
+        },
+        {
+            link: '/ebipps-dashboard/tmpl/Heloc',
+            name: 'I am Seller',
+            img_src: './assets/img/seller-24.png',
+            exact: true
+        },
+        {
+            link: '/ebipps-dashboard/tmpl/OneTimeClose',
+            name: 'I am Buyer',
+            img_src: './assets/img/buyer-24.png',
+            exact: true
+        }
+    ];
+
 
 }
