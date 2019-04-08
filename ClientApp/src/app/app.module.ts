@@ -3,13 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MaterialModule, FlexLayoutModule, AngularCdkModule } from './shared';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
-import { NavComponent } from './core/components/nav/nav.component';
-import { DashboardComponent } from './core/components/dashboard/dashboard.component';
-import { NotFoundPageComponent} from './core/containers/not-found-page.component';
+
+import { CoreModule } from './core/core.module';
 
 //NgRx
 import { reducers, metaReducers } from './reducers';
@@ -24,20 +23,23 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
 @NgModule({
   declarations: [
     AppComponent,
-    NavComponent,
-    DashboardComponent,
-    NotFoundPageComponent
+   
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MaterialModule,
-    FlexLayoutModule,
-    AngularCdkModule,
-
+    
+   /**
+     * StoreModule.forRoot is imported once in the root module, accepting a reducer
+     * function or object map of reducer functions. If passed an object of
+     * reducers, combineReducers will be run creating your application
+     * meta-reducer. This returns all providers for an @ngrx/store
+     * based application.
+     */
     StoreModule.forRoot(reducers, { metaReducers }),
+
     EffectsModule.forRoot([]),
 
     // Instrumentation must be imported after importing StoreModule (config is optional)
@@ -48,11 +50,9 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
     }),
 
     // attaching to the route state to the app root state
-    StoreRouterConnectingModule.forRoot({
-      stateKey: 'router',
-    }),
+    StoreRouterConnectingModule.forRoot(),
 
-    
+    CoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
