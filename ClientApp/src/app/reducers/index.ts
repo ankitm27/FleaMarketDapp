@@ -6,7 +6,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 
 import { environment } from '../../environments/environment';
 
-import * as fromSpinner from '../core/store/reducers/layout.reducer';
+import * as fromSpinner from '../core/store/reducers/spinner.reducer';
 
 
 // nice moment here
