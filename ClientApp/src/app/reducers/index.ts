@@ -7,26 +7,25 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import { environment } from '../../environments/environment';
 
 import * as fromSpinner from '../core/store/reducers/spinner.reducer';
-
+import * as fromError from '../core/store/reducers/error.reducer';
 
 // nice moment here
 // here is our root state, which also includes the route state
 export interface AppState {
   router: RouterReducerState;
   spinner: fromSpinner.SpinnerState;
+  error: fromError.ErrorState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   router: routerReducer,
-  spinner: fromSpinner.reducer
+  spinner: fromSpinner.reducer,
+  error: fromError.reducer,
 };
 
 export const metaReducers = environment.production ? [] : [storeFreeze];
 
 
-/**
- * Spinner Reducers
- */
 export const getSpinnerState = createFeatureSelector<AppState, fromSpinner.SpinnerState>(
   'spinner'
 );
@@ -37,3 +36,11 @@ export const getSpinnerShow = createSelector(
 );
 
 
+export const getErrorState = createFeatureSelector<AppState, fromError.ErrorState>(
+  'error'
+);
+
+export const getError = createSelector(
+  getErrorState,
+  fromError.getError
+);
