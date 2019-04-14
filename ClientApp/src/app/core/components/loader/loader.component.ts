@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
 import { select, Store } from '@ngrx/store';
 
-import * as fromRoot from '../../../reducers';
+import * as fromRoot from '../../store/reducers';
 import { tap } from 'rxjs/operators';
 
 @Component({

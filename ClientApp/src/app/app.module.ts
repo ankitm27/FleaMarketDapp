@@ -5,13 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { HttpClientModule } from '@angular/common/http';
 
 import { CoreModule } from './core/core.module';
 
 //NgRx
-import { reducers, metaReducers } from './reducers';
+import * as fromRootStore from './core/store';
+import { metaReducers } from './core/store/reducers';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -38,9 +38,9 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
      * meta-reducer. This returns all providers for an @ngrx/store
      * based application.
      */
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot(fromRootStore.reducers, { metaReducers }),
 
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot(fromRootStore.effects),
 
     // Instrumentation must be imported after importing StoreModule (config is optional)
     StoreDevtoolsModule.instrument({

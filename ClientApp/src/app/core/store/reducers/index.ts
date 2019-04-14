@@ -4,10 +4,10 @@ import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 
-import { environment } from '../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
-import * as fromSpinner from '../core/store/reducers/spinner.reducer';
-import * as fromError from '../core/store/reducers/error.reducer';
+import * as fromSpinner from './spinner.reducer';
+import * as fromError from './error.reducer';
 
 // nice moment here
 // here is our root state, which also includes the route state
