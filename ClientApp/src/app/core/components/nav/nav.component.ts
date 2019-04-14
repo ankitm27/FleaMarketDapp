@@ -26,19 +26,19 @@ export class NavComponent {
 
   nav:  INavInterface[]  = [
         {
-            link: '/ebipps-dashboard/tmpl/ConformNotConform',
+            link: '/dashboard',
             name: 'Home',
             img_src: './assets/img/home-24.png',
             exact: true
         },
         {
-            link: '/ebipps-dashboard/tmpl/Heloc',
+            link: '/seller-booth',
             name: 'I am Seller',
             img_src: './assets/img/seller-24.png',
             exact: true
         },
         {
-            link: '/ebipps-dashboard/tmpl/OneTimeClose',
+            link: '/buyer',
             name: 'I am Buyer',
             img_src: './assets/img/buyer-24.png',
             exact: true

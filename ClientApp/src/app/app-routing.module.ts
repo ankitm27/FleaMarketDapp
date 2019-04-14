@@ -10,7 +10,12 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
   },
-  { path: '**', component: NotFoundPageComponent },
+  {
+    path: 'seller-booth',
+    loadChildren: './seller-booth/seller-booth.module#SellerBoothModule',
+  },
+  { path: '**', component: NotFoundPageComponent }, // !!!has to be the last one 
+ 
 ];
 
 @NgModule({
