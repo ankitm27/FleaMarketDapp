@@ -6,6 +6,9 @@ import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
+import * as fromRoot from '../../../core/store/reducers';
+import { Web3ProviderActions } from '../../../core/store/actions';
+
 @Component({
   selector: 'app-new-purchase',
   templateUrl: './new-purchase.component.html',
@@ -15,6 +18,7 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
   public attack$: Observable<string>;
 
   constructor(
+    private store: Store<fromRoot.AppState>,
     private formBuilder: FormBuilder
   ) {}
 
@@ -26,7 +30,8 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
-    
+    // move it later to guard
+    this.store.dispatch(Web3ProviderActions.web3ProviderInit());
   }
 
   ngOnDestroy(): void {
