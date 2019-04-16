@@ -2,10 +2,10 @@ import { Injectable, Inject } from '@angular/core';
 
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { Observable, of, from, EMPTY as empty } from 'rxjs';
-import {exhaustMap, switchMap, map, tap, catchError } from 'rxjs/operators';
+import {exhaustMap, switchMap, map, tap, catchError, finalize} from 'rxjs/operators';
 
 import { WEB3PROVIDER } from '../../services/tokens';
-import { Web3ProviderActions, ErrorActions } from '../actions';
+import { Web3ProviderActions, SpinnerActions, ErrorActions}  from '../actions';
 
 
 @Injectable()
@@ -19,6 +19,7 @@ export class Web3ProviderEffects {
     @Effect()
       metaMaskEnable$ = this.actions$.pipe(
         ofType(Web3ProviderActions.web3ProviderInit.type),
+        
         exhaustMap(() => {
 
           if ('enable' in this.web3Provider) {
@@ -46,9 +47,9 @@ export class Web3ProviderEffects {
               }),
 
               // User denied account access
-              catchError((err: Error) => of(ErrorActions.ethErrorAction({errorMsg: err.message})))
+              catchError((err: Error) => of(ErrorActions.ethErrorAction({errorMsg: err.message}))),
 
-            );
+            ); 
 
           }
 
