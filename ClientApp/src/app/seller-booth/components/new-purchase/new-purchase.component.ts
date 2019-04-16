@@ -31,7 +31,7 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // move it later to guard
-    this.store.dispatch(Web3ProviderActions.web3ProviderInit());
+    // this.store.dispatch(Web3ProviderActions.web3ProviderInit());
   }
 
   ngOnDestroy(): void {

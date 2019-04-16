@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './core/components/dashboard/dashboard.component';
 import { NotFoundPageComponent } from './core/containers/not-found-page.component';
 
+import * as guards from './core/guards';
+
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {
@@ -13,6 +15,7 @@ export const routes: Routes = [
   {
     path: 'seller-booth',
     loadChildren: './seller-booth/seller-booth.module#SellerBoothModule',
+    canActivate: [guards.EthInitGuard],
   },
   { path: '**', component: NotFoundPageComponent }, // !!!has to be the last one 
  

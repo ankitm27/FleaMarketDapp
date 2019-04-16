@@ -6,14 +6,15 @@ import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { map, take, tap, filter, switchMap, catchError } from 'rxjs/operators';
 import { CoreModule } from '../core.module';
-import * as fromEth from '../../ethereum';
+import * as fromRoot from '../store';
+
 
 
 @Injectable({
   providedIn: CoreModule,
 })
 export class EthInitGuard implements CanActivate {
-  constructor(private store: Store<fromEth.AppState>) {}
+  constructor(private store: Store<fromRoot.AppState>) {}
 
   canActivate(): Observable<boolean> {
     return this.checkStore().pipe(
@@ -26,13 +27,10 @@ export class EthInitGuard implements CanActivate {
 
   checkStore(): Observable<boolean> {
       return this.store.pipe(
-        select(fromEth.getConStatus),
-        // notice that the tap() will have no effect on the stream
-        // it just does some stuff and passes the observable it received down to the next operator
-
-        tap(connected => {
+        select(fromRoot.getMetaMaskEnable),
+         tap(connected => {
           if (!connected) {
-            this.store.dispatch(new fromEth.InitEth());
+            this.store.dispatch(fromRoot.Web3ProviderActions.web3ProviderInit());
 
           }
         }),
