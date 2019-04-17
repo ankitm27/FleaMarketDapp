@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Store, select } from '@ngrx/store';
@@ -9,6 +9,9 @@ import { takeUntil, tap } from 'rxjs/operators';
 import * as fromRoot from '../../../core/store/reducers';
 import { Web3ProviderActions } from '../../../core/store/actions';
 
+import { ethers } from 'ethers';
+import { Provider} from '../../../core/services/tokens';
+
 @Component({
   selector: 'app-new-purchase',
   templateUrl: './new-purchase.component.html',
@@ -18,6 +21,7 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
   public attack$: Observable<string>;
 
   constructor(
+    private provider: Provider,
     private store: Store<fromRoot.AppState>,
     private formBuilder: FormBuilder
   ) {}
@@ -29,9 +33,16 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
     // attack: ''
   });
 
-  ngOnInit() {
-    // move it later to guard
-    // this.store.dispatch(Web3ProviderActions.web3ProviderInit());
+  async ngOnInit() {
+    // There is only ever up to one account in MetaMask exposed
+    const signer = this.provider.getSigner();
+    console.log('signer', signer);
+    
+    const address = await signer.getAddress();
+    console.log('address', address);
+
+    const balance = await signer.getBalance();
+    console.log('balance', ethers.utils.formatEther(balance).toString());
   }
 
   ngOnDestroy(): void {

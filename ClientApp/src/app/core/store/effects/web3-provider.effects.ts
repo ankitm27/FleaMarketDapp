@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 
 import { Actions, ofType, Effect } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { Observable, of, from, EMPTY as empty } from 'rxjs';
 import {exhaustMap, switchMap, map, tap, catchError, finalize} from 'rxjs/operators';
 
@@ -17,9 +18,9 @@ export class Web3ProviderEffects {
     }
 
     @Effect()
-      metaMaskEnable$ = this.actions$.pipe(
+      metaMaskEnable$: Observable<Action> = this.actions$.pipe(
         ofType(Web3ProviderActions.web3ProviderInit.type),
-        
+ 
         exhaustMap(() => {
 
           if ('enable' in this.web3Provider) {
@@ -58,5 +59,16 @@ export class Web3ProviderEffects {
         })
 
       );
-   
+
+      @Effect()
+        showSpinner$: Observable<Action> = this.actions$.pipe(
+          ofType(Web3ProviderActions.web3ProviderInit.type),
+          map(() => SpinnerActions.showSpinnerAction()));
+
+      @Effect()
+      hideSpinner$: Observable<Action> = this.actions$.pipe(
+        ofType(Web3ProviderActions.web3ProviderInitSuccess.type, ErrorActions.ethErrorAction.type),
+        map(() => SpinnerActions.hideSpinnerAction()));
+    
+        
 }
