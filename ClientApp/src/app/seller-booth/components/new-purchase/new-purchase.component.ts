@@ -9,8 +9,8 @@ import { takeUntil, tap } from 'rxjs/operators';
 import * as fromRoot from '../../../core/store/reducers';
 import { Web3ProviderActions } from '../../../core/store/actions';
 
-import { ethers } from 'ethers';
-import { Provider} from '../../../core/services/tokens';
+// import { ethers } from 'ethers';
+// import { Provider} from '../../../core/services/tokens';
 
 @Component({
   selector: 'app-new-purchase',
@@ -21,7 +21,7 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
   public attack$: Observable<string>;
 
   constructor(
-    private provider: Provider,
+    // private provider: Provider,
     private store: Store<fromRoot.AppState>,
     private formBuilder: FormBuilder
   ) {}
@@ -35,14 +35,16 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     // There is only ever up to one account in MetaMask exposed
+    /*
     const signer = this.provider.getSigner();
     console.log('signer', signer);
     
     const address = await signer.getAddress();
     console.log('address', address);
 
-    const balance = await signer.getBalance();
-    console.log('balance', ethers.utils.formatEther(balance).toString());
+    const balance = await signer.getBalance(); */
+    //console.log('balance', ethers.utils.formatEther(balance));
+   
   }
 
   ngOnDestroy(): void {
