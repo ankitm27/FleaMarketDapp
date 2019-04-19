@@ -2,7 +2,7 @@
 
 import { createAction, props } from '@ngrx/store';
 
-export const ethErrorAction = createAction('[Ether] Error',  props<{ errorMsg: string }>());
+export const errorMessage = createAction('[Error] Error Message',  props<{ errorMsg: string }>());
 
-export type ErrorActionsUnion = ReturnType<typeof ethErrorAction>;
+export type ErrorActionsUnion = ReturnType<typeof errorMessage>;
 

@@ -14,7 +14,7 @@ export function reducer(state: ErrorState = initialState, action: Action): Error
   const specificAction = action as ErrorActions.ErrorActionsUnion;
 
   switch (specificAction.type) {
-      case ErrorActions.ethErrorAction.type:
+      case ErrorActions.errorMessage.type:
           return { ...state, error: specificAction.errorMsg };
      
       default:

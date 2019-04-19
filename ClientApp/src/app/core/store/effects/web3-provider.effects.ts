@@ -36,7 +36,7 @@ export class Web3ProviderEffects {
               map((ethAccounts: string[]) => {
 
                 if (ethAccounts.length === 0) {
-                  return ErrorActions.ethErrorAction({errorMsg: 'Can not get any user accounts'});
+                  return ErrorActions.errorMessage({errorMsg: 'Can not get any user accounts'});
                 }
 
                 return  Web3ProviderActions.web3ProviderInitSuccess();
@@ -44,7 +44,7 @@ export class Web3ProviderEffects {
               }),
 
               // User denied account access
-              catchError((err: Error) => of(ErrorActions.ethErrorAction({errorMsg: err.message}))),
+              catchError((err: Error) => of(ErrorActions.errorMessage({errorMsg: err.message}))),
 
             ); 
 
@@ -59,12 +59,12 @@ export class Web3ProviderEffects {
       @Effect()
         showSpinner$: Observable<Action> = this.actions$.pipe(
           ofType(Web3ProviderActions.web3ProviderInit.type),
-          map(() => SpinnerActions.showSpinnerAction()));
+          map(() => SpinnerActions.show()));
 
       @Effect()
       hideSpinner$: Observable<Action> = this.actions$.pipe(
-        ofType(Web3ProviderActions.web3ProviderInitSuccess.type, ErrorActions.ethErrorAction.type),
-        map(() => SpinnerActions.hideSpinnerAction()));
+        ofType(Web3ProviderActions.web3ProviderInitSuccess.type, ErrorActions.errorMessage.type),
+        map(() => SpinnerActions.hide()));
 
 
       // ''' to be continue ..put here effect to set address and balance

@@ -15,7 +15,7 @@ export class ErrorEffects {
     @Effect({ dispatch: false })
     handleError$ = this.actions$
     .pipe(
-      ofType(ErrorActions.ethErrorAction.type),
+      ofType(ErrorActions.errorMessage.type),
       tap(action => console.error('Got error:', action.errorMsg))
     );
 

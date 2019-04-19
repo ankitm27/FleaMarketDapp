@@ -1,9 +1,8 @@
 
-
 import { createAction, union } from '@ngrx/store';
 
-export const showSpinnerAction = createAction('[Spinner] Show');
-export const hideSpinnerAction = createAction('[Spinner] Hide');
+export const show = createAction('[Spinner] Show');
+export const hide = createAction('[Spinner] Hide');
 
-const all = union({ showSpinnerAction, hideSpinnerAction });
+const all = union({ show, hide });
 export type SpinnerActionsUnion = typeof all;

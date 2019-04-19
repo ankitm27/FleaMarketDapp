@@ -29,22 +29,22 @@ export const reducers: ActionReducerMap<AppState> = {
 export const metaReducers = environment.production ? [] : [storeFreeze];
 
 
-export const getSpinnerState = createFeatureSelector<AppState, fromSpinner.SpinnerState>(
+export const selectSpinnerState = createFeatureSelector<AppState, fromSpinner.SpinnerState>(
   'spinner'
 );
 
 export const getSpinnerShow = createSelector(
-  getSpinnerState,
+  selectSpinnerState,
   fromSpinner.getSpinnerShow
 );
 
 
-export const getErrorState = createFeatureSelector<AppState, fromError.ErrorState>(
+export const selectErrorState = createFeatureSelector<AppState, fromError.ErrorState>(
   'error'
 );
 
 export const getError = createSelector(
-  getErrorState,
+  selectErrorState,
   fromError.getError
 );
 

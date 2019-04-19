@@ -44,8 +44,7 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
 
     // Instrumentation must be imported after importing StoreModule (config is optional)
     StoreDevtoolsModule.instrument({
-      name: 'DApp Smart Contract State',
-      maxAge: 25, // Retains last 25 states
+      name: 'FleaMarket DApp Store State',
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
 
