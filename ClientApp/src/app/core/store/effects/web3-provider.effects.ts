@@ -21,7 +21,7 @@ export class Web3ProviderEffects {
 
     @Effect()
       metaMaskEnable$: Observable<Action> = this.actions$.pipe(
-        ofType(Web3ProviderActions.web3ProviderInit.type),
+        ofType(Web3ProviderActions.init.type),
  
         exhaustMap(() => {
 
@@ -39,7 +39,7 @@ export class Web3ProviderEffects {
                   return ErrorActions.errorMessage({errorMsg: 'Can not get any user accounts'});
                 }
 
-                return  Web3ProviderActions.web3ProviderInitSuccess();
+                return  Web3ProviderActions.initSuccess();
            
               }),
 
@@ -58,12 +58,12 @@ export class Web3ProviderEffects {
 
       @Effect()
         showSpinner$: Observable<Action> = this.actions$.pipe(
-          ofType(Web3ProviderActions.web3ProviderInit.type),
+          ofType(Web3ProviderActions.init.type),
           map(() => SpinnerActions.show()));
 
       @Effect()
       hideSpinner$: Observable<Action> = this.actions$.pipe(
-        ofType(Web3ProviderActions.web3ProviderInitSuccess.type, ErrorActions.errorMessage.type),
+        ofType(Web3ProviderActions.initSuccess.type, ErrorActions.errorMessage.type),
         map(() => SpinnerActions.hide()));
 
 

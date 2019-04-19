@@ -30,7 +30,7 @@ export class EthInitGuard implements CanActivate {
         select(fromRoot.getMetaMaskEnable),
          tap(connected => {
           if (!connected) {
-            this.store.dispatch(fromRoot.Web3ProviderActions.web3ProviderInit());
+            this.store.dispatch(fromRoot.Web3ProviderActions.init());
 
           }
         }),

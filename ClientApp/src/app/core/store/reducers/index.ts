@@ -48,19 +48,19 @@ export const getError = createSelector(
   fromError.getError
 );
 
-export const getWeb3ProviderState = createFeatureSelector<AppState, fromWeb3Provider.Web3ProviderState>(
+export const selectWeb3ProviderState = createFeatureSelector<AppState, fromWeb3Provider.Web3ProviderState>(
   'web3Provider'
 );
 
 export const getMetaMaskEnable = createSelector(
-  getWeb3ProviderState,
+  selectWeb3ProviderState,
   fromWeb3Provider.getMetaMaskEnable
 );
-export const getAccountAddress = createSelector(
-  getWeb3ProviderState,
-  fromWeb3Provider.getAddress
+export const getAccount = createSelector(
+  selectWeb3ProviderState,
+  fromWeb3Provider.getAccount
 );
-export const getAccountBalance= createSelector(
-  getWeb3ProviderState,
+export const getBalance = createSelector(
+  selectWeb3ProviderState,
   fromWeb3Provider.getBalance
 );
