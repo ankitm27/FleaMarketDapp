@@ -3,9 +3,10 @@ import { Injectable, Inject } from '@angular/core';
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of, from, EMPTY as empty } from 'rxjs';
-import {exhaustMap, map, tap, catchError} from 'rxjs/operators';
+import {exhaustMap, switchMap, map, tap, catchError} from 'rxjs/operators';
 
 import { MetamaskWeb3Provider } from '../../services/tokens';
+import { ProviderService } from '../../services/provider.services';
 import { Web3ProviderActions, SpinnerActions, ErrorActions}  from '../actions';
 
 
@@ -14,6 +15,7 @@ export class Web3ProviderEffects {
 
     constructor(
       @Inject(MetamaskWeb3Provider) private web3Provider,
+      private providerSrv: ProviderService,
       private readonly actions$: Actions<Web3ProviderActions.web3ProviderActionsUnion>) {
     }
 
@@ -65,7 +67,25 @@ export class Web3ProviderEffects {
       map(() => SpinnerActions.hide()));
 
 
-      // ''' to be continue ..put here effect to set address and balance
-    
+    @Effect()
+    getAccount$: Observable<Action> = this.actions$.pipe(
+      ofType(Web3ProviderActions.initSuccess.type),
+      switchMap(() => this.providerSrv.getAccount().pipe(
+        map((address: string) =>  Web3ProviderActions.account({address})),
+        catchError((err: Error) => of(ErrorActions.errorMessage({errorMsg: err.message}))),
+      )),
+
+    );
+
+    @Effect()
+    getBalance$: Observable<Action> = this.actions$.pipe(
+      ofType(Web3ProviderActions.initSuccess.type),
+      switchMap(() => this.providerSrv.getBalance().pipe(
+        map((balance: string) =>  Web3ProviderActions.balanceSuccess({balance})),
+        catchError((err: Error) => of(ErrorActions.errorMessage({errorMsg: err.message}))),
+      )),
+
+    );
+
         
 }

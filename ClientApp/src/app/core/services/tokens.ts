@@ -9,7 +9,7 @@ export const MetamaskWeb3Provider = new InjectionToken('Metamask Web3 provider',
 });
 
 @Injectable({ providedIn: 'root' })
-export class EthersProvider extends providers.Web3Provider {
+export class Provider extends providers.Web3Provider {
   constructor(@Inject(MetamaskWeb3Provider) web3Provider) {
     super(web3Provider);
   }
