@@ -4,14 +4,12 @@ import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { map, take, tap, filter, switchMap, catchError } from 'rxjs/operators';
-import { CoreModule } from '../core.module';
+import { take, tap, filter, switchMap, catchError } from 'rxjs/operators';
 import * as fromRoot from '../store';
 
 
-
 @Injectable({
-  providedIn: CoreModule,
+  providedIn: 'root',
 })
 export class EthInitGuard implements CanActivate {
   constructor(private store: Store<fromRoot.AppState>) {}
@@ -44,7 +42,5 @@ export class EthInitGuard implements CanActivate {
               take(1)
       );
   }
-
-
 
 }
