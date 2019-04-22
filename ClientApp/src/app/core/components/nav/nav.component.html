@@ -32,7 +32,23 @@
             <img src="./assets/img/ether-32.png">
             FleaMarket DApp
         </span>
+
+        <span class="toolbar-fill-remaining-space">
+        </span>
+
+        <div fxLayout="row" fxLayoutAlign="start center" 
+                           fxLayoutGap="10px" *ngIf="account$ | async as account">
+
+          <div fxFlex="15">Address:</div> 
+          <mat-chip color="primary" selected >{{account}}</mat-chip>
+
+          <div fxFlex="15">Balance:</div>
+          <mat-chip color="accent" selected fxFlex="20">{{balance$ | async}}</mat-chip>
+        </div>
+        
+
       </mat-toolbar>
+
       <!-- Add Content Here -->
       <app-loader></app-loader>
 
@@ -40,4 +56,5 @@
    
     </mat-sidenav-content>
   </mat-sidenav-container>
+
 </div>
