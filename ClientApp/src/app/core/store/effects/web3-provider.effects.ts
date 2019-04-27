@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { Observable, of, from, EMPTY as empty } from 'rxjs';
+import { of, from, EMPTY as empty } from 'rxjs';
 import { exhaustMap, switchMap, map, tap, catchError } from 'rxjs/operators';
 
 import { MetamaskWeb3Provider } from '../../services/tokens';
