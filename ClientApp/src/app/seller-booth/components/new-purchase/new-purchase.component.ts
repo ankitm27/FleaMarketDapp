@@ -39,7 +39,6 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
         console.error(err);
       });
 
-      
   }
 
   ngOnDestroy(): void {
