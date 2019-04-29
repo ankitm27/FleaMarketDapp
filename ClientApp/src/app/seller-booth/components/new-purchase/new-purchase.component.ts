@@ -29,6 +29,7 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    
     this.ipfs
       .id()
       .then(res => {
@@ -37,6 +38,8 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
       .catch(err => {
         console.error(err);
       });
+
+      
   }
 
   ngOnDestroy(): void {
