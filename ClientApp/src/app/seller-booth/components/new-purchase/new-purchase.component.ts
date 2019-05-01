@@ -30,14 +30,10 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     
-    this.ipfs
-      .id()
-      .then(res => {
-        console.log(`daemon active ${res.id}`);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    this.ipfs.id()
+      .then(res => console.log(`daemon active ${res.id}`))
+      .catch(err => console.error(err));
+      
 
   }
 

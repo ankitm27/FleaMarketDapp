@@ -1,5 +1,6 @@
 import * as SpinnerActions from './spinner.actions';
 import * as ErrorActions from './error.actions';
 import * as Web3ProviderActions from './web3-provider.actions';
+import * as IpfsActions from './ipfs-daemon.actions';
 
-export { SpinnerActions, ErrorActions, Web3ProviderActions };
+export { SpinnerActions, ErrorActions, Web3ProviderActions, IpfsActions };

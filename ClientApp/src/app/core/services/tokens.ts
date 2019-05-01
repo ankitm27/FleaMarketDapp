@@ -27,9 +27,8 @@ export const ipfsToken = new InjectionToken('The IPFS instance', {
         protocol: 'https'
       });
     } catch (err) {
-      throw new Error(
-        'Unable to retrieve the injected Ethereum provider from  MetaMask'
-      );
+      console.log('Error', err);
+      throw new Error('Unable to access IPFS node daemon on Infura network');
     }
   }
 });
