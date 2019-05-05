@@ -19,7 +19,7 @@ export class Provider extends providers.Web3Provider {
   }
 }
 
-export const ipfsToken = new InjectionToken('The IPFS instance', {
+export const ipfsToken = new InjectionToken('The IPFS Token', {
   providedIn: 'root',
   factory: () => {
     try {
