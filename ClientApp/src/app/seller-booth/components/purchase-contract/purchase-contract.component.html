@@ -1,0 +1,89 @@
+
+<div class="context-container">
+    <div fxLayout="row" fxLayoutAlign="center start">
+      <mat-card fxFlex="60">
+        <mat-card-title class="text-center"
+          >Seller Booth Merchandiser</mat-card-title
+        >
+        <mat-card-subtitle>
+          Create New Purchase Contract
+        </mat-card-subtitle>
+  
+        <mat-card-content>
+  
+          <div fxLayout="row" fxLayoutGap="6px">
+            <span class="red-color">*</span>
+            <div class="mat-caption text-muted">required fields</div>
+          </div>
+  
+          <form [formGroup]="frmGroup" novalidate>
+              <div fxLayout="row" fxLayoutAlign="start center">
+  
+                  <mat-form-field [color]="'accent'" fxFlex>
+                      <input matInput placeholder="Title *" formControlName="title">
+                      <mat-error *ngIf="required('title')">Value is required</mat-error>
+                  </mat-form-field>
+  
+              </div>
+              <div fxLayout="row" fxLayoutAlign="start center">
+  
+                  <mat-form-field [color]="'accent'" fxFlex>
+                      <input matInput placeholder="Price *" formControlName="price">
+                      <span matPrefix>$ETH:&nbsp;&nbsp;</span>
+                      <span matSuffix>(#.####)</span>
+                      <mat-error *ngIf="required('price')">Value is required</mat-error>
+                      <mat-error *ngIf="invalidPattern('price')">Invalid price format value</mat-error>
+                  </mat-form-field>
+  
+              </div>
+              <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+                <input type="file" #file style="display: none" (change)="onFileChange($event)" />
+                <button mat-raised-button color="primary" (click)="selectFile()">
+                  Select Product Image
+                  <mat-icon class="material-icons">note_add</mat-icon>
+                </button>
+  
+                <table *ngIf="fileModel">
+                  <thead>
+                      <tr>
+                          <th class="mat-subheading-1">File Name</th>
+                          <th class="mat-subheading-1">Progress</th>
+                          <th class="mat-subheading-1">Status</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>
+                              {{ fileModel.name}}
+                              <br />
+                              <mat-error mat-line *ngIf="requiredFile('fileArg')">You must choose a file</mat-error>
+                              <mat-error mat-line *ngIf="invalidPatternFile('fileArg')">Invalid file image extension</mat-error>
+                          </td>
+                          <td class="spiner-section-200" align="center">
+                            <mat-progress-spinner  color='warn' mode='indeterminate' value='50' diameter='50' strokeWidth='5'>
+                        </mat-progress-spinner>
+                          </td>
+  
+                          <td>
+                              <mat-chip *ngIf="isPending()">{{status}}</mat-chip>
+                              <mat-chip [selected]="true" color='accent' *ngIf="isSuccess()">{{status}}</mat-chip>
+                              <mat-chip [selected]="true" color='primary' *ngIf="inProgress()">{{status}}</mat-chip>
+                              <mat-chip [selected]="true" color='warn' *ngIf="isError()">{{status}}</mat-chip>
+  
+                          </td>
+                      </tr>
+  
+                  </tbody>
+  
+              </table>
+  
+  
+              </div>
+  
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  
+

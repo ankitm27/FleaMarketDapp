@@ -13,19 +13,19 @@ import { EffectsModule } from '@ngrx/effects';
 // Services
 // import { AttackChangeService } from './attack-change.services';
 
-import { NewPurchaseComponent } from './components/new-purchase/new-purchase.component';
+import { PurchaseContractComponent } from './components/purchase-contract/purchase-contract.component';
 
 const routes: Routes = [
 
   {
       path: '',
-      component: NewPurchaseComponent,
+      component: PurchaseContractComponent,
   },
 
 ];
 
 @NgModule({
-  declarations: [NewPurchaseComponent],
+  declarations: [PurchaseContractComponent],
    
   imports: [
     CommonModule,
