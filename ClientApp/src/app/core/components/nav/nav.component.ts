@@ -42,6 +42,7 @@ export class NavComponent implements OnInit {
 
   account$: Observable<string>;
   balance$: Observable<string>;
+  ipfsConnect$: Observable<boolean>;
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -55,5 +56,6 @@ export class NavComponent implements OnInit {
   ngOnInit() {
     this.account$ = this.store.pipe(select(fromRoot.getAccount));
     this.balance$ = this.store.pipe(select(fromRoot.getBalance));
+    this.ipfsConnect$ = this.store.pipe(select(fromRoot.getIpfsConnectStatus));
   }
 }

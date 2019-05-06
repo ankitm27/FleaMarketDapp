@@ -1,5 +1,5 @@
 <div class="app-container">
- 
+  
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav
       #drawer
@@ -35,15 +35,35 @@
 
         <span class="toolbar-fill-remaining-space">
         </span>
-
+    
         <div fxLayout="row" fxLayoutAlign="start center" 
-                           fxLayoutGap="10px" *ngIf="account$ | async as account">
+                           fxLayoutGap="10px" *ngIf="{account: account$ | async, balance: balance$ | async, ipfsConnect: ipfsConnect$ | async} as values;">
 
-          <div fxFlex="15">Address:</div> 
-          <mat-chip color="primary" selected >{{account}}</mat-chip>
+          <ng-container *ngIf="values.account; then authorized; else unauthorized">
+          </ng-container>
 
-          <div fxFlex="15">Balance:</div>
-          <mat-chip color="accent" selected fxFlex="20">{{balance$ | async}}</mat-chip>
+          <ng-template #authorized>
+            <div fxFlex="15">Address:</div> 
+            <mat-chip-list>
+                <mat-chip color="primary" selected >{{values.account}}</mat-chip>
+            </mat-chip-list>
+            
+
+            <div fxFlex="15">Balance:</div>
+            <mat-chip-list>
+               <mat-chip color="accent" selected>{{values.balance}}</mat-chip>
+            </mat-chip-list>
+           
+            <div fxFlex="15">IPFS Connect:</div>
+            <div fxFlex="20" *ngIf="values.ipfsConnect">🔵</div>
+            <div fxFlex="20" *ngIf="!values.ipfsConnect">🔴</div>
+
+          </ng-template>
+
+          <ng-template #unauthorized>
+
+          </ng-template>
+
         </div>
         
 
