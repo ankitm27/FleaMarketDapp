@@ -5,14 +5,14 @@ import { of, from, EMPTY as empty } from 'rxjs';
 import { exhaustMap, switchMap, map, tap, catchError } from 'rxjs/operators';
 
 import { MetamaskWeb3Provider } from '../../services/tokens';
-import { ProviderService } from '../../services/provider.services';
+import { Web3ProviderService } from '../../services/web3-provider.services';
 import { Web3ProviderActions, SpinnerActions, ErrorActions } from '../actions';
 
 @Injectable()
 export class Web3ProviderEffects {
   constructor(
     @Inject(MetamaskWeb3Provider) private web3Provider,
-    private providerSrv: ProviderService,
+    private providerSrv: Web3ProviderService,
     private readonly actions$: Actions
   ) {}
 

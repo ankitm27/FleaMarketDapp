@@ -9,7 +9,7 @@ import { map, tap, catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class ProviderService {
+export class Web3ProviderService {
 
    private signer: Signer;
    
