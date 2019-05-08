@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 
-import { ipfsToken } from '../services/tokens';
+import { ipfsToken } from './tokens';
 
 import { Observable, of, from } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';

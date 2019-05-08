@@ -14,7 +14,7 @@ export class IpfsDaemonEffects {
     private readonly actions$: Actions
   ) {}
 
-  onConnectEffects$ = createEffect(
+  onConnectEffect$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(ROOT_EFFECTS_INIT),
