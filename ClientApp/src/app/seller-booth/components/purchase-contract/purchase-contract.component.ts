@@ -17,7 +17,8 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   @ViewChild('file') fileControl: ElementRef;
   fileModel: File;
-  ipfsHash: string;
+  ipfsHash$: Observable<string>;
+
   status: FileUploadStatus;
   imgPreviewURL: any;
 
@@ -84,7 +85,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
        }
       
      // set ipfsHash to null
-     this.ipfsHash = null
+     // dispatch action to set ipfsHash$ to null
 
     }
   }
