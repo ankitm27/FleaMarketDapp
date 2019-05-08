@@ -5,13 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../core/store/reducers';
-
-export interface INavInterface {
-  link: string;
-  name: string;
-  img_src: string;
-  exact: boolean;
-}
+import { INavInterface} from '../../models';
 
 @Component({
   selector: 'app-nav',
