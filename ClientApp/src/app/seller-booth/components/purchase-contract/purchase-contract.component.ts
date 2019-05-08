@@ -1,9 +1,4 @@
-import {
-  Component,
-  ViewChild,
-  ElementRef,
-  OnInit,
-  OnDestroy
+import {Component, ViewChild, ElementRef, OnInit, OnDestroy
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
@@ -19,10 +14,12 @@ type FileUploadStatus = 'Pending' | 'Success' | 'Error' | 'Progress';
   styleUrls: ['./purchase-contract.component.css']
 })
 export class PurchaseContractComponent implements OnInit, OnDestroy {
-  public attack$: Observable<string>;
+
   @ViewChild('file') fileControl: ElementRef;
   fileModel: File;
+  ipfsHash: string;
   status: FileUploadStatus;
+  imgPreviewURL: any;
 
   constructor(
     private store: Store<fromRoot.AppState>,
@@ -70,11 +67,25 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
     this.fileControl.nativeElement.click();
   }
 
+  uploadToIPFS() {
+    
+  }
+
   onFileChange(event) {
     if (event.target.files && event.target.files.length) {
       this.fileModel = event.target.files[0];
 
       this.frmGroup.get('fileArg').patchValue(this.fileModel.name);
+      
+      const reader = new FileReader();
+      reader.readAsDataURL(this.fileModel); 
+      reader.onload = (_event) => { 
+          this.imgPreviewURL = reader.result; 
+       }
+      
+     // set ipfsHash to null
+     this.ipfsHash = null
+
     }
   }
 
@@ -88,4 +99,5 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
 }
