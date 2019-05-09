@@ -10,6 +10,7 @@ import * as fromSpinner from './spinner.reducer';
 import * as fromError from './error.reducer';
 import * as fromWeb3Provider from './web3-provider.reducer';
 import * as fromIpfsDaemon from './ipfs-daemon.reducer';
+import * as fromIpfsUpload from './ipfs-upload.reducer';
 
 // nice moment here
 // here is our root state, which also includes the route state
@@ -18,7 +19,8 @@ export interface AppState {
   spinner: fromSpinner.SpinnerState;
   error: fromError.ErrorState;
   web3Provider: fromWeb3Provider.Web3ProviderState;
-  ipfs: fromIpfsDaemon.IpfsDaemonState
+  ipfsDaemon: fromIpfsDaemon.IpfsDaemonState;
+  ipfsUpload: fromIpfsUpload.IpfsUploadState
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -26,7 +28,8 @@ export const reducers: ActionReducerMap<AppState> = {
   spinner: fromSpinner.reducer,
   error: fromError.reducer,
   web3Provider: fromWeb3Provider.reducer,
-  ipfs: fromIpfsDaemon.reducer
+  ipfsDaemon: fromIpfsDaemon.reducer,
+  ipfsUpload: fromIpfsUpload.reducer
 };
 
 export const metaReducers = environment.production ? [] : [storeFreeze];
@@ -66,10 +69,23 @@ export const getBalance = createSelector(
   fromWeb3Provider.getBalance
 );
 
-export const selectIpfsState = createFeatureSelector<AppState, fromIpfsDaemon.IpfsDaemonState>(
-  'ipfs'
+export const selectIpfsDaemonState = createFeatureSelector<AppState, fromIpfsDaemon.IpfsDaemonState>(
+  'ipfsDaemon'
 );
 export const getIpfsConnectStatus = createSelector(
-  selectIpfsState,
+  selectIpfsDaemonState,
   fromIpfsDaemon.getIpfsConnectStatus
+);
+
+export const selectIpfsUploadState = createFeatureSelector<AppState, fromIpfsUpload.IpfsUploadState>(
+  'ipfsUpload'
+);
+export const getIpfsUploadStatus = createSelector(
+  selectIpfsUploadState,
+  fromIpfsUpload.getUploadStatus
+);
+
+export const getIpfsHash = createSelector(
+  selectIpfsUploadState,
+  fromIpfsUpload.getIpfsHash
 );

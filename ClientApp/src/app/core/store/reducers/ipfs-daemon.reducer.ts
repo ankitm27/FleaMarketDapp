@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { IpfsActions } from '../actions';
+import { IpfsDaemonActions } from '../actions';
 
 export interface IpfsDaemonState {
   connectStatus: boolean;
@@ -11,7 +11,7 @@ const initialState: IpfsDaemonState = {
 
 export const reducer = createReducer(
   initialState,
-  on(IpfsActions.connectSuccess, state => ({
+  on(IpfsDaemonActions.connectSuccess, state => ({
     ...state,
     connectStatus: true
   })),

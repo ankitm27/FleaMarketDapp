@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { switchMap, map, tap, catchError } from 'rxjs/operators';
 
 import { IpfsDaemonService } from '../../services/ipfs-daemon.services';
-import { IpfsActions, ErrorActions } from '../actions';
+import { IpfsDaemonActions, ErrorActions } from '../actions';
 
 @Injectable()
 export class IpfsDaemonEffects {
@@ -21,7 +21,7 @@ export class IpfsDaemonEffects {
         switchMap(() => 
           this.ipfsSrv.getId().pipe(
             tap(id => console.log(`IPFS node id: ${id}`)),
-            map(_ => IpfsActions.connectSuccess()),
+            map(_ => IpfsDaemonActions.connectSuccess()),
             
             catchError((err: Error) =>
               of(ErrorActions.errorMessage({ errorMsg: err.message }))

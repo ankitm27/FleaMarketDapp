@@ -5,8 +5,8 @@ import { Observable, Subject } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../core/store/reducers';
-
-type FileUploadStatus = 'Pending' | 'Success' | 'Error' | 'Progress';
+import { FileUploadStatus } from '../../../core/store/reducers/ipfs-upload.reducer';
+import { IpfsUploadActions } from '../../../core/store/actions';
 
 @Component({
   selector: 'app-new-purchase',
@@ -18,8 +18,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   @ViewChild('file') fileControl: ElementRef;
   fileModel: File;
   ipfsHash$: Observable<string>;
-
-  status: FileUploadStatus;
+  uploadStatus$: Observable<FileUploadStatus>;
   imgPreviewURL: any;
 
   constructor(
@@ -39,7 +38,8 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
-    this.status = 'Pending';
+    this.uploadStatus$ = this.store.pipe(select(fromRoot.getIpfsUploadStatus));
+    this.ipfsHash$ = this.store.pipe(select(fromRoot.getIpfsHash));
   }
 
   formControl = (name: string) => this.frmGroup.get(`${name}`);
@@ -68,8 +68,8 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
     this.fileControl.nativeElement.click();
   }
 
-  uploadToIPFS() {
-    
+  uploadFileToIPFS() {
+    this.store.dispatch(IpfsUploadActions.start({file: this.fileModel}));
   }
 
   onFileChange(event) {
@@ -84,16 +84,15 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
           this.imgPreviewURL = reader.result; 
        }
       
-     // set ipfsHash to null
-     // dispatch action to set ipfsHash$ to null
+      this.store.dispatch(IpfsUploadActions.reset);
 
     }
   }
 
-  isPending = () => this.status === 'Pending';
-  isSuccess = () => this.status === 'Success';
-  isError = () => this.status === 'Error';
-  inProgress = () => this.status === 'Progress';
+  isPending = (status: FileUploadStatus) => status === 'Pending';
+  isSuccess = (status: FileUploadStatus) => status === 'Success';
+  isError = (status: FileUploadStatus) => status === 'Error';
+  inProgress = (status: FileUploadStatus) => status === 'Progress';
 
 
   ngOnDestroy(): void {
