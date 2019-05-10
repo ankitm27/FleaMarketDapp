@@ -16,11 +16,18 @@ export class IpfsDaemonService {
     public getId(): Observable<string> {
        
         return from(this.ipfs.id()).pipe(
-          tap((res: any) => console.log(`Connected to IPFS node: id: ${res.id}, agentVersion: ${res.agentVersion}, protocolVersion: ${res.protocolVersion}`)),
-           
+          tap((res: any) => console.log(`IPFS node id object: ${JSON.stringify(res)}`)),
           map(res => res.id),
         );
     }
+
+    public getVersion(): Observable<string> {
+       
+      return from(this.ipfs.version()).pipe(
+        tap((res: any) => console.log(`IPFS node version object: ${JSON.stringify(res)}`)),
+        map(res => res.version),
+      );
+  }
 
 
     

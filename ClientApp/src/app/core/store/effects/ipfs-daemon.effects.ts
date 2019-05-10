@@ -19,8 +19,8 @@ export class IpfsDaemonEffects {
       this.actions$.pipe(
         ofType(ROOT_EFFECTS_INIT),
         switchMap(() => 
-          this.ipfsSrv.getId().pipe(
-            tap(id => console.log(`IPFS node id: ${id}`)),
+          this.ipfsSrv.getVersion().pipe(
+            tap(version => console.log(`IPFS node version: ${version}`)),
             map(_ => IpfsDaemonActions.connectSuccess()),
             
             catchError((err: Error) =>
