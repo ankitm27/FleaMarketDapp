@@ -36,9 +36,9 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
-    this.file$ = this.rootStore$.pipe(select(fromStore.getIpfsFile));
-    this.uploadStatus$ = this.rootStore$.pipe(select(fromStore.getIpfsUploadStatus));
-    this.ipfsHash$ = this.rootStore$.pipe(select(fromStore.getIpfsHash));
+    this.file$ = this.store$.pipe(select(fromStore.getIpfsFile));
+    this.uploadStatus$ = this.store$.pipe(select(fromStore.getIpfsUploadStatus));
+    this.ipfsHash$ = this.store$.pipe(select(fromStore.getIpfsHash));
   }
 
   formControl = (name: string) => this.frmGroup.get(`${name}`);
@@ -68,7 +68,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   }
 
   uploadFileToIPFS() {
-    this.rootStore$.dispatch(IpfsUploadActions.start);
+    this.store$.dispatch(IpfsUploadActions.start);
   }
 
   onFileChange(event) {
@@ -83,7 +83,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
           this.imgPreviewURL = reader.result; 
        }
       
-      this.rootStore$.dispatch(IpfsUploadActions.add({file}));
+      this.store$.dispatch(IpfsUploadActions.add({file}));
 
     }
   }
@@ -96,7 +96,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
-    this.rootStore$.dispatch(IpfsUploadActions.add({file: null}));
+    this.store$.dispatch(IpfsUploadActions.add({file: null}));
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

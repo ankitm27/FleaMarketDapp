@@ -129,6 +129,11 @@
   
           </mat-card-content>
   
+         
+          <mat-card-content *ngIf="(file$ | async) as file;">
+            File: {{file | json}}
+          </mat-card-content>
+         
           <!-- 
   
             <mat-card-content>
