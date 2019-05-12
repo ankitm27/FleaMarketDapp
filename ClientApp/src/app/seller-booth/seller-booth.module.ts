@@ -10,13 +10,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './store/ipfs-upload.reducer';
 import { IpfsUploadEffects } from './store/ipfs-upload.effects';
 
-// Services
-// import { AttackChangeService } from './attack-change.services';
-
 import { PurchaseContractComponent } from './components/purchase-contract/purchase-contract.component';
 
 const routes: Routes = [
-
   {
       path: '',
       component: PurchaseContractComponent,
@@ -38,6 +34,5 @@ const routes: Routes = [
     StoreModule.forFeature('ipfsUploadState', reducers),
     EffectsModule.forFeature([IpfsUploadEffects])
   ],
-  // providers: [AttackChangeService]
 })
 export class SellerBoothModule { }

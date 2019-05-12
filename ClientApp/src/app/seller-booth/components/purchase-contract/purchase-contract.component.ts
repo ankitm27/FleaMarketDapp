@@ -1,6 +1,8 @@
 import {Component, ViewChild, ElementRef, OnInit, OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { Observable, Subject } from 'rxjs';
+import { tap, withLatestFrom, map } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store/ipfs-upload.reducer';
@@ -15,6 +17,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   @ViewChild('file') fileControl: ElementRef;
   file$: Observable<File>;
+  fileModel: File;
   ipfsHash$: Observable<string>;
   uploadStatus$: Observable<fromStore.FileUploadStatus>;
   imgPreviewURL: any;
@@ -36,9 +39,23 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
-    this.file$ = this.store$.pipe(select(fromStore.getIpfsFile));
-    this.uploadStatus$ = this.store$.pipe(select(fromStore.getIpfsUploadStatus));
+    
+    this.uploadStatus$ = this.store$.pipe(select(fromStore.getIpfsUploadStatus))
+    .pipe(
+      tap(stat => console.log(`got status: ${stat}`))
+    );
+
+
+
     this.ipfsHash$ = this.store$.pipe(select(fromStore.getIpfsHash));
+    this.file$ = this.store$.pipe(
+             select(fromStore.getIpfsFile),
+             tap(file => {
+               //if (file)
+                //console.log(`Got file: size: ${file.size}, name: ${file.name}, type: ${file.type}`);
+
+               this.fileModel = file;
+             }));
   }
 
   formControl = (name: string) => this.frmGroup.get(`${name}`);
@@ -77,13 +94,15 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
       this.frmGroup.get('fileArg').patchValue(file.name);
       
+      this.store$.dispatch(IpfsUploadActions.add({file}));
+      
+      
       const reader = new FileReader();
       reader.readAsDataURL(file); 
       reader.onload = (_event) => { 
           this.imgPreviewURL = reader.result; 
        }
-      
-      this.store$.dispatch(IpfsUploadActions.add({file}));
+  
 
     }
   }

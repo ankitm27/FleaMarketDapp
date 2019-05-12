@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {tap, map } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../core/store/reducers';
@@ -49,7 +49,12 @@ export class NavComponent implements OnInit {
 
   ngOnInit() {
     this.account$ = this.store.pipe(select(fromRoot.getAccount));
-    this.balance$ = this.store.pipe(select(fromRoot.getBalance));
+    
+    this.balance$ = this.store.pipe(
+      select(fromRoot.getBalance),
+      tap(balance => console.log(`Debug got balance: ${balance}`))
+      );
+
     this.ipfsConnect$ = this.store.pipe(select(fromRoot.getIpfsConnectStatus));
   }
 }

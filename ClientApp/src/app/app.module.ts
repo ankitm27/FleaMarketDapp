@@ -11,7 +11,7 @@ import { CoreModule } from './core/core.module';
 
 //NgRx
 import * as fromRootStore from './core/store';
-import { metaReducers } from './core/store/reducers';
+import { ROOT_REDUCERS, metaReducers } from './core/store/reducers';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -38,7 +38,12 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
      * meta-reducer. This returns all providers for an @ngrx/store
      * based application.
      */
-    StoreModule.forRoot(fromRootStore.reducers, { metaReducers }),
+    StoreModule.forRoot(ROOT_REDUCERS, {
+      metaReducers,
+      runtimeChecks: {
+        strictImmutability: true,
+      },
+    }),
     EffectsModule.forRoot(fromRootStore.effects),
 
     // Instrumentation must be imported after importing StoreModule (config is optional)

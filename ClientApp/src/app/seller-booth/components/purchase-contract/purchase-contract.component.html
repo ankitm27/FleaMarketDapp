@@ -47,17 +47,18 @@
                 Select Product Image
                 <mat-icon>category</mat-icon>
               </button>
-              <button mat-raised-button color="accent" *ngIf="(file$ | async)"
-                  (click)="uploadFileToIPFS()"
-                  [disabled]="formControl('fileArg').invalid">
-                  Upload To IPFS
-                  <mat-icon>offline_bolt</mat-icon>
-              </button>
-           
+              
+              <button mat-raised-button color="accent" *ngIf="fileModel"
+                (click)="uploadFileToIPFS()"
+                [disabled]="formControl('fileArg').invalid">
+                Upload To IPFS
+                <mat-icon>offline_bolt</mat-icon>
+              </button> 
+
           </mat-card-actions>
   
          
-          <mat-card-content *ngIf="(file$ | async) as fileModel">
+          <mat-card-content *ngIf="fileModel">
   
               <div fxLayout="row" fxLayoutAlign="start center">
   
@@ -128,12 +129,7 @@
               </div>
   
           </mat-card-content>
-  
-         
-          <mat-card-content *ngIf="(file$ | async) as file;">
-            File: {{file | json}}
-          </mat-card-content>
-         
+
           <!-- 
   
             <mat-card-content>

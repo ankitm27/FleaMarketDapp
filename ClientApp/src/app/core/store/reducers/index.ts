@@ -1,8 +1,8 @@
 
-import { ActionReducerMap } from '@ngrx/store';
+import { ActionReducerMap, ActionReducer, MetaReducer } from '@ngrx/store';
+import { InjectionToken } from '@angular/core';
 import { routerReducer, RouterReducerState } from '@ngrx/router-store';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { storeFreeze } from 'ngrx-store-freeze';
+import { createFeatureSelector, createSelector, Action } from '@ngrx/store';
 
 import { environment } from '../../../../environments/environment';
 
@@ -21,15 +21,40 @@ export interface AppState {
   ipfsDaemon: fromIpfsDaemon.IpfsDaemonState;
 };
 
-export const reducers: ActionReducerMap<AppState> = {
-  router: routerReducer,
-  spinner: fromSpinner.reducer,
-  error: fromError.reducer,
-  web3Provider: fromWeb3Provider.reducer,
-  ipfsDaemon: fromIpfsDaemon.reducer
-};
 
-export const metaReducers = environment.production ? [] : [storeFreeze];
+/**
+ * Our state is composed of a map of action reducer functions.
+ * These reducer functions are called with each dispatched action
+ * and the current or initial state and return a new immutable state.
+ */
+export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<AppState, Action>>('Root reducers token', {
+  factory: () => ({
+    router: routerReducer,
+    spinner: fromSpinner.reducer,
+    error: fromError.reducer,
+    web3Provider: fromWeb3Provider.reducer,
+    ipfsDaemon: fromIpfsDaemon.reducer
+  }),
+});
+
+// console.log all actions
+export function logger(reducer: ActionReducer<AppState>): ActionReducer<AppState> {
+  return (state, action) => {
+    const result = reducer(state, action);
+    console.groupCollapsed(action.type);
+    console.log('prev state', state);
+    console.log('action', action);
+    console.log('next state', result);
+    console.groupEnd();
+
+    return result;
+  };
+}
+
+export const metaReducers: MetaReducer<AppState>[] = !environment.production
+  ? [logger]
+  : [];
+
 
 
 export const selectSpinnerState = createFeatureSelector<AppState, fromSpinner.SpinnerState>(
