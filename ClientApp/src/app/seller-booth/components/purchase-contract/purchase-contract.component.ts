@@ -20,7 +20,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   imgPreviewURL: any;
 
   constructor(
-    private rootStore$: Store<fromStore.AppState>,
+    private store$: Store<fromStore.AppState>,
     private formBuilder: FormBuilder
   ) {}
 

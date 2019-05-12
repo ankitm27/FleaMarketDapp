@@ -1,21 +1,21 @@
 import { Injectable, Inject } from '@angular/core';
 
 import { Actions, ofType, createEffect, ROOT_EFFECTS_INIT } from '@ngrx/effects';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import { of, fromEvent} from 'rxjs';
 import { switchMap, withLatestFrom, map, tap, catchError } from 'rxjs/operators';
 
 import { ipfsToken } from '../../core/services/tokens';
 import * as IpfsUploadActions  from './ipfs-upload.actions';
-import {  ErrorActions } from '../../core/store/actions';
+import { ErrorActions } from '../../core/store/actions';
 import * as fromStore from './ipfs-upload.reducer';
 
 @Injectable()
 export class IpfsUploadEffects {
   constructor(
     @Inject(ipfsToken) private ipfs,
-    private rootStore$: Store<fromStore.AppState>,
+    private store$: Store<fromStore.AppState>,
     private readonly actions$: Actions
   ) {}
 
@@ -26,7 +26,7 @@ export class IpfsUploadEffects {
         ofType(IpfsUploadActions.start),
 
         withLatestFrom(
-          this.rootStore$.select(fromStore.getIpfsFile),
+          this.store$.select(fromStore.getIpfsFile),
           (action, file) => ({ action, file})
       ),
         
