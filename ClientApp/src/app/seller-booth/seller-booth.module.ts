@@ -7,8 +7,8 @@ import { MaterialModule, FlexLayoutModule } from '../shared';
 // NGRX
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-// import { reducers } from './attack-change.reducers';
-// import { AttackChangeEffects } from './attack-change.effects';
+import { reducers } from './store/ipfs-upload.reducer';
+import { IpfsUploadEffects } from './store/ipfs-upload.effects';
 
 // Services
 // import { AttackChangeService } from './attack-change.services';
@@ -35,8 +35,8 @@ const routes: Routes = [
 
     RouterModule.forChild(routes),
 
-    // StoreModule.forFeature('attackState', reducers),
-    // EffectsModule.forFeature([AttackChangeEffects])
+    StoreModule.forFeature('ipfsUploadState', reducers),
+    EffectsModule.forFeature([IpfsUploadEffects])
   ],
   // providers: [AttackChangeService]
 })

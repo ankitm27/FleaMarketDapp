@@ -39,7 +39,6 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
      * based application.
      */
     StoreModule.forRoot(fromRootStore.reducers, { metaReducers }),
-
     EffectsModule.forRoot(fromRootStore.effects),
 
     // Instrumentation must be imported after importing StoreModule (config is optional)

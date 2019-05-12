@@ -1,12 +1,10 @@
-import {Component, ViewChild, ElementRef, OnInit, OnDestroy
-} from '@angular/core';
+import {Component, ViewChild, ElementRef, OnInit, OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
-import * as fromRoot from '../../../core/store/reducers';
-import { FileUploadStatus } from '../../../core/store/reducers/ipfs-upload.reducer';
-import { IpfsUploadActions } from '../../../core/store/actions';
+import * as fromStore from '../../store/ipfs-upload.reducer';
+import * as IpfsUploadActions from '../../store/ipfs-upload.actions';
 
 @Component({
   selector: 'app-new-purchase',
@@ -16,13 +14,13 @@ import { IpfsUploadActions } from '../../../core/store/actions';
 export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   @ViewChild('file') fileControl: ElementRef;
-  fileModel: File;
+  file$: Observable<File>;
   ipfsHash$: Observable<string>;
-  uploadStatus$: Observable<FileUploadStatus>;
+  uploadStatus$: Observable<fromStore.FileUploadStatus>;
   imgPreviewURL: any;
 
   constructor(
-    private store: Store<fromRoot.AppState>,
+    private rootStore$: Store<fromStore.AppState>,
     private formBuilder: FormBuilder
   ) {}
 
@@ -38,8 +36,9 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
-    this.uploadStatus$ = this.store.pipe(select(fromRoot.getIpfsUploadStatus));
-    this.ipfsHash$ = this.store.pipe(select(fromRoot.getIpfsHash));
+    this.file$ = this.rootStore$.pipe(select(fromStore.getIpfsFile));
+    this.uploadStatus$ = this.rootStore$.pipe(select(fromStore.getIpfsUploadStatus));
+    this.ipfsHash$ = this.rootStore$.pipe(select(fromStore.getIpfsHash));
   }
 
   formControl = (name: string) => this.frmGroup.get(`${name}`);
@@ -69,33 +68,35 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   }
 
   uploadFileToIPFS() {
-    this.store.dispatch(IpfsUploadActions.start({file: this.fileModel}));
+    this.rootStore$.dispatch(IpfsUploadActions.start);
   }
 
   onFileChange(event) {
     if (event.target.files && event.target.files.length) {
-      this.fileModel = event.target.files[0];
+      const file = event.target.files[0];
 
-      this.frmGroup.get('fileArg').patchValue(this.fileModel.name);
+      this.frmGroup.get('fileArg').patchValue(file.name);
       
       const reader = new FileReader();
-      reader.readAsDataURL(this.fileModel); 
+      reader.readAsDataURL(file); 
       reader.onload = (_event) => { 
           this.imgPreviewURL = reader.result; 
        }
       
-      this.store.dispatch(IpfsUploadActions.reset);
+      this.rootStore$.dispatch(IpfsUploadActions.add({file}));
 
     }
   }
 
-  isPending = (status: FileUploadStatus) => status === 'Pending';
-  isSuccess = (status: FileUploadStatus) => status === 'Success';
-  isError = (status: FileUploadStatus) => status === 'Error';
-  inProgress = (status: FileUploadStatus) => status === 'Progress';
+  isPending = (status: fromStore.FileUploadStatus) => status === 'Pending';
+  isSuccess = (status: fromStore.FileUploadStatus) => status === 'Success';
+  isError = (status: fromStore.FileUploadStatus) => status === 'Error';
+  inProgress = (status: fromStore.FileUploadStatus) => status === 'Progress';
 
 
   ngOnDestroy(): void {
+
+    this.rootStore$.dispatch(IpfsUploadActions.add({file: null}));
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

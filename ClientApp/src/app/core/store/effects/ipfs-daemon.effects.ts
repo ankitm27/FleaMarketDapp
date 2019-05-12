@@ -1,7 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 
 import { Actions, ofType, createEffect, ROOT_EFFECTS_INIT } from '@ngrx/effects';
-import { of } from 'rxjs';
+
+import { of} from 'rxjs';
 import { switchMap, map, tap, catchError } from 'rxjs/operators';
 
 import { IpfsDaemonService } from '../../services/ipfs-daemon.services';
@@ -14,7 +15,7 @@ export class IpfsDaemonEffects {
     private readonly actions$: Actions
   ) {}
 
-  onConnectEffect$ = createEffect(
+  onConnect$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(ROOT_EFFECTS_INIT),

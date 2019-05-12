@@ -47,7 +47,8 @@
                 Select Product Image
                 <mat-icon>category</mat-icon>
               </button>
-              <button mat-raised-button color="accent" (click)="uploadFileToIPFS()"
+              <button mat-raised-button color="accent" *ngIf="(file$ | async)"
+                  (click)="uploadFileToIPFS()"
                   [disabled]="formControl('fileArg').invalid">
                   Upload To IPFS
                   <mat-icon>offline_bolt</mat-icon>
@@ -56,7 +57,7 @@
           </mat-card-actions>
   
          
-          <mat-card-content *ngIf="fileModel">
+          <mat-card-content *ngIf="(file$ | async) as fileModel">
   
               <div fxLayout="row" fxLayoutAlign="start center">
   
