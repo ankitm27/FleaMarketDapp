@@ -1,5 +1,11 @@
 
-import { createReducer, on, ActionReducerMap, createSelector, createFeatureSelector } from '@ngrx/store';
+import {
+  createReducer, on,
+  createSelector,
+  createFeatureSelector,
+  Action,
+  combineReducers,
+} from '@ngrx/store';
 import * as IpfsUploadActions from './ipfs-upload.actions';
 import * as root from '../../core/store/reducers';
 
@@ -52,18 +58,19 @@ export interface AppState extends root.AppState {
   ipfsUploadState: IpfsUploadState;
 }
 
-export const reducers: ActionReducerMap<IpfsUploadState> = {
-  ipfsUpload: reducer
-};
+export function reducers(state: IpfsUploadState | undefined, action: Action) {
+  return combineReducers({
+    ipfsUpload: reducer
+  })(state, action);
+}
 
 
-export const selectIpfsUploadState = createFeatureSelector<AppState, IpfsUploadState>(
+export const getIpfsUploadStateSlice = createFeatureSelector<AppState, IpfsUploadState>(
   'ipfsUploadState'
 );
 
-export const getIpfsUploadState = createSelector(selectIpfsUploadState, (state: IpfsUploadState) => state.ipfsUpload);
+export const getIpfsUploadState = createSelector(getIpfsUploadStateSlice, state => state.ipfsUpload);
 
 export const getIpfsUploadStatus = createSelector(getIpfsUploadState, (state: State) => state.status);
 export const getIpfsHash = createSelector(getIpfsUploadState, (state: State) => state.ipfsHash);
 export const getIpfsFile = createSelector(getIpfsUploadState, (state: State) => state.file);
-

@@ -2,7 +2,7 @@ import {Component, ViewChild, ElementRef, OnInit, OnDestroy} from '@angular/core
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Observable, Subject } from 'rxjs';
-import { tap, withLatestFrom, map } from 'rxjs/operators';
+import { tap} from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store/ipfs-upload.reducer';
@@ -40,9 +40,9 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     
-    this.uploadStatus$ = this.store$.pipe(select(fromStore.getIpfsUploadStatus))
-    .pipe(
-      tap(stat => console.log(`got status: ${stat}`))
+    this.uploadStatus$ = this.store$.pipe(
+      select(fromStore.getIpfsUploadStatus),
+      tap(stat => console.log(`Debug got status: ${stat}`))
     );
 
 
