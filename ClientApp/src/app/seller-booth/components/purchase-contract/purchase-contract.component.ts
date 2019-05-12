@@ -17,7 +17,6 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   @ViewChild('file') fileControl: ElementRef;
   file$: Observable<File>;
-  fileModel: File;
   ipfsHash$: Observable<string>;
   uploadStatus$: Observable<fromStore.FileUploadStatus>;
   imgPreviewURL: any;
@@ -40,22 +39,10 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     
-    this.uploadStatus$ = this.store$.pipe(
-      select(fromStore.getIpfsUploadStatus),
-      tap(stat => console.log(`Debug got status: ${stat}`))
-    );
-
-
-
+    this.uploadStatus$ = this.store$.pipe(select(fromStore.getIpfsUploadStatus));
     this.ipfsHash$ = this.store$.pipe(select(fromStore.getIpfsHash));
-    this.file$ = this.store$.pipe(
-             select(fromStore.getIpfsFile),
-             tap(file => {
-               //if (file)
-                //console.log(`Got file: size: ${file.size}, name: ${file.name}, type: ${file.type}`);
-
-               this.fileModel = file;
-             }));
+    this.file$ = this.store$.pipe(select(fromStore.getIpfsFile));
+        
   }
 
   formControl = (name: string) => this.frmGroup.get(`${name}`);
@@ -94,15 +81,13 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
       this.frmGroup.get('fileArg').patchValue(file.name);
       
-      this.store$.dispatch(IpfsUploadActions.add({file}));
-      
-      
       const reader = new FileReader();
       reader.readAsDataURL(file); 
       reader.onload = (_event) => { 
           this.imgPreviewURL = reader.result; 
-       }
-  
+       };
+
+      this.store$.dispatch(IpfsUploadActions.add({file}));
 
     }
   }
