@@ -2,7 +2,6 @@ import {Component, ViewChild, ElementRef, OnInit, OnDestroy} from '@angular/core
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Observable, Subject } from 'rxjs';
-import { tap} from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store/ipfs-upload.reducer';
@@ -16,10 +15,10 @@ import * as IpfsUploadActions from '../../store/ipfs-upload.actions';
 export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   @ViewChild('file') fileControl: ElementRef;
-  file$: Observable<File>;
+  fileModel: File;
   ipfsHash$: Observable<string>;
   uploadStatus$: Observable<fromStore.FileUploadStatus>;
-  imgPreviewURL: any;
+  imgDataBuffer$: Observable<ArrayBuffer>;
 
   constructor(
     private store$: Store<fromStore.AppState>,
@@ -40,9 +39,8 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   ngOnInit() {
     
     this.uploadStatus$ = this.store$.pipe(select(fromStore.getIpfsUploadStatus));
-    this.ipfsHash$ = this.store$.pipe(select(fromStore.getIpfsHash));
-    this.file$ = this.store$.pipe(select(fromStore.getIpfsFile));
-        
+    this.ipfsHash$ = this.store$.pipe(select(fromStore.getIpfsHash));  
+    this.imgDataBuffer$ = this.store$.pipe(select(fromStore.getFileData));          
   }
 
   formControl = (name: string) => this.frmGroup.get(`${name}`);
@@ -71,23 +69,23 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
     this.fileControl.nativeElement.click();
   }
 
-  uploadFileToIPFS() {
+  uploadFile() {
     this.store$.dispatch(IpfsUploadActions.start);
   }
 
   onFileChange(event) {
     if (event.target.files && event.target.files.length) {
-      const file = event.target.files[0];
+      this.fileModel = event.target.files[0];
 
-      this.frmGroup.get('fileArg').patchValue(file.name);
+      this.frmGroup.get('fileArg').patchValue(this.fileModel.name);
       
       const reader = new FileReader();
-      reader.readAsDataURL(file); 
+      reader.readAsDataURL(this.fileModel); 
       reader.onload = (_event) => { 
-          this.imgPreviewURL = reader.result; 
+          this.store$.dispatch(IpfsUploadActions.add({fileData: reader.result as ArrayBuffer}));
        };
 
-      this.store$.dispatch(IpfsUploadActions.add({file}));
+      
 
     }
   }
@@ -100,7 +98,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
-    this.store$.dispatch(IpfsUploadActions.add({file: null}));
+    this.store$.dispatch(IpfsUploadActions.add({fileData: null}));
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

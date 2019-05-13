@@ -49,7 +49,7 @@
               </button>
               
               <button mat-raised-button color="accent" *ngIf="fileModel"
-                (click)="uploadFileToIPFS()"
+                (click)="uploadFile()"
                 [disabled]="formControl('fileArg').invalid">
                 Upload To IPFS
                 <mat-icon>offline_bolt</mat-icon>
@@ -74,7 +74,7 @@
             <div fxLayout="row" fxLayoutAlign="start center">
   
                 <div fxFlex="25" class="text-center">
-                    <img matLine [src]="imgPreviewURL" height="200" width="200" />
+                    <img matLine [src]="imgDataBuffer$ | async" height="200" width="200" />
                 </div>
   
                 <div fxFlex="25" class="text-center">
@@ -197,10 +197,7 @@
   
   
            --> 
-          
-     
-            
-         
+
       
         </form>
       </mat-card>

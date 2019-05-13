@@ -12,22 +12,22 @@ import * as root from '../../core/store/reducers';
 export type FileUploadStatus = 'Pending' | 'Success' | 'Error' | 'Progress';
 
 export interface State {
-    file: File | null;
+    fileData: ArrayBuffer | null;
     status: FileUploadStatus;
     ipfsHash: string | null
 }
 
 const initialState: State = {
-    file: null,
+    fileData: null,
     status: 'Pending',
     ipfsHash: null,
 };
 
 export const reducer = createReducer(
   initialState,
-  on(IpfsUploadActions.add, (state, { file }) => ({
+  on(IpfsUploadActions.add, (state, { fileData }) => ({
     ...state,
-    file,
+    fileData,
     status: 'Pending',
     ipfsHash: null
   })),
@@ -73,4 +73,4 @@ export const getIpfsUploadState = createSelector(getIpfsUploadStateSlice, state 
 
 export const getIpfsUploadStatus = createSelector(getIpfsUploadState, (state: State) => state.status);
 export const getIpfsHash = createSelector(getIpfsUploadState, (state: State) => state.ipfsHash);
-export const getIpfsFile = createSelector(getIpfsUploadState, (state: State) => state.file);
+export const getFileData = createSelector(getIpfsUploadState, (state: State) => state.fileData);
