@@ -4,7 +4,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
-import { switchMap, withLatestFrom, map, tap, catchError } from 'rxjs/operators';
+import { switchMap, map, tap, catchError } from 'rxjs/operators';
 
 import { Buffer } from 'buffer';
 
@@ -43,15 +43,12 @@ export class IpfsUploadEffects {
     () =>
       this.actions$.pipe(
         ofType(IpfsUploadActions.start),
-        withLatestFrom(
-          this.store$.select(fromStore.getFileData),
-          (action, fileData) => ({ action, fileData})
-         ),
-         map(data => data.fileData),
-       
-        switchMap((dataBuffer) => {
-          const imgBuffer =  Buffer.from(dataBuffer);
-          // console.log('from effect', imgBuffer)
+        
+        switchMap((data) => {
+          
+          const fileStream =  Buffer.from(data.content);
+          const path = data.path;
+          console.log(`uploadFile effect: path: ${path}`);
 
 
           return empty();

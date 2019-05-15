@@ -16,9 +16,10 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   @ViewChild('file') fileControl: ElementRef;
   fileModel: File;
+  fileContent: ArrayBuffer;
+
   ipfsHash$: Observable<string>;
   uploadStatus$: Observable<fromStore.FileUploadStatus>;
-  imgDataBuffer$: Observable<ArrayBuffer>;
 
   constructor(
     private store$: Store<fromStore.AppState>,
@@ -39,8 +40,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   ngOnInit() {
     
     this.uploadStatus$ = this.store$.pipe(select(fromStore.getIpfsUploadStatus));
-    this.ipfsHash$ = this.store$.pipe(select(fromStore.getIpfsHash));  
-    this.imgDataBuffer$ = this.store$.pipe(select(fromStore.getFileData));          
+    this.ipfsHash$ = this.store$.pipe(select(fromStore.getIpfsHash));         
   }
 
   formControl = (name: string) => this.frmGroup.get(`${name}`);
@@ -70,7 +70,9 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   }
 
   uploadFile() {
-    this.store$.dispatch(IpfsUploadActions.start);
+    this.store$.dispatch(IpfsUploadActions.start({ 
+      path: this.fileModel.name,
+      content: this.fileContent}));
   }
 
   onFileChange(event) {
@@ -82,11 +84,9 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.readAsDataURL(this.fileModel); 
       reader.onload = (_event) => { 
-          this.store$.dispatch(IpfsUploadActions.add({fileData: reader.result as ArrayBuffer}));
+          this.fileContent = reader.result as ArrayBuffer; 
+          this.store$.dispatch(IpfsUploadActions.add);
        };
-
-      
-
     }
   }
 
@@ -98,7 +98,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
-    this.store$.dispatch(IpfsUploadActions.add({fileData: null}));
+    this.store$.dispatch(IpfsUploadActions.add);
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

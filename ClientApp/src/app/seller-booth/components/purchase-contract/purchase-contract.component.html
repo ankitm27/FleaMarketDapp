@@ -74,7 +74,7 @@
             <div fxLayout="row" fxLayoutAlign="start center">
   
                 <div fxFlex="25" class="text-center">
-                    <img matLine [src]="imgDataBuffer$ | async" height="200" width="200" />
+                    <img matLine [src]="fileContent" height="200" width="200" />
                 </div>
   
                 <div fxFlex="25" class="text-center">
@@ -113,10 +113,6 @@
                         <mat-chip *ngIf="isSuccess(status)" selected="true" color="accent">
                           {{ status }}
                         </mat-chip>
-                        <!--<mat-chip *ngIf="inProgress()" selected="true" color="primary">
-                          {{ status }}
-                          </mat-chip> 
-                        -->
                         <mat-chip *ngIf="isError(status)" selected="true" color="warn" >
                           {{status}}
                         </mat-chip>
@@ -139,65 +135,7 @@
           </mat-card-content>
           -->
   
-          
-  
-           <!-- 
-  <table *ngIf="fileModel">
-              <thead>
-                <tr>
-                  <th class="mat-subheading-1">File Name</th>
-                  <th class="mat-subheading-1">Progress</th>
-                  <th class="mat-subheading-1">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    {{ fileModel.name }}
-                    <br />
-                    <mat-error mat-line *ngIf="requiredFile('fileArg')"
-                      >You must choose a file</mat-error
-                    >
-                    <mat-error mat-line *ngIf="invalidPatternFile('fileArg')"
-                      >Invalid file image extension</mat-error
-                    >
-                  </td>
-                  <td class="spiner-section-200" align="center">
-                    <mat-progress-spinner
-                      color="warn"
-                      mode="indeterminate"
-                      value="50"
-                      diameter="50"
-                      strokeWidth="5"
-                    >
-                    </mat-progress-spinner>
-                  </td>
-  
-                  <td>
-                    <mat-chip *ngIf="isPending()">{{ status }}</mat-chip>
-                    <mat-chip
-                      [selected]="true"
-                      color="accent"
-                      *ngIf="isSuccess()"
-                      >{{ status }}</mat-chip
-                    >
-                    <mat-chip
-                      [selected]="true"
-                      color="primary"
-                      *ngIf="inProgress()"
-                      >{{ status }}</mat-chip
-                    >
-                    <mat-chip [selected]="true" color="warn" *ngIf="isError()">{{
-                      status
-                    }}</mat-chip>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-  
-  
-           --> 
-
+   
       
         </form>
       </mat-card>
