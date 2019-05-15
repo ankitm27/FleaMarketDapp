@@ -1,96 +1,43 @@
 
 import { Injectable, Inject } from '@angular/core';
-
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-
-import { switchMap, map, tap, catchError } from 'rxjs/operators';
-
+import { exhaustMap, map, tap, catchError } from 'rxjs/operators';
+import { of} from 'rxjs';
 import { Buffer } from 'buffer';
 
-import { ipfsToken } from '../../core/services/tokens';
+import { IpfsDaemonService } from '../../core/services/ipfs-daemon.services';
 import * as IpfsUploadActions  from './ipfs-upload.actions';
-import { ErrorActions, SpinnerActions } from '../../core/store/actions';
-import * as fromStore from './ipfs-upload.reducer';
-import { empty } from 'rxjs';
+import { ErrorActions } from '../../core/store/actions';
 
 @Injectable()
 export class IpfsUploadEffects {
   constructor(
-    @Inject(ipfsToken) private ipfs,
-    private store$: Store<fromStore.AppState>,
+    private ipfsSrv: IpfsDaemonService,
     private readonly actions$: Actions
   ) {}
 
 
-  showSpinner$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(IpfsUploadActions.start),
-      map(() => SpinnerActions.show())
-    )
-  );
-
-  // fix it later
-  hideSpinner$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(IpfsUploadActions.success, ErrorActions.errorMessage),
-      map(() => SpinnerActions.hide())
-    )
-  );
-
-  
   uploadFile$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(IpfsUploadActions.start),
         
-        switchMap((data) => {
+        exhaustMap((data) => {
           
           const fileStream =  Buffer.from(data.content);
           const path = data.path;
-          console.log(`uploadFile effect: path: ${path}`);
-
-
-          return empty();
-        })
-   
-
-        //map(_ => IpfsUploadActions.success({ ipfsHash: 'Moby Dick' })),
-
-      ));
-
-      
-
-  /*
-  uploadFile$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(IpfsUploadActions.start),
-        withLatestFrom(
-          this.store$.select(fromStore.getIpfsFileData),
-          (action, file) => ({ action, file})
-        ),
-        tap(data => console.log('from uploadFile$', data.file)),
-        
-        // we use the switchMap. The user can change his mind and upload another file without waiting for the previous action to materialize. 
-        switchMap((data) => {
-
           
-          
-          return source.pipe(
-            tap(event => console.log(`File onload event: ${JSON.stringify(event)}`)),
-            map(_ => IpfsUploadActions.success({ ipfsHash: 'Moby Dick' })),
+          return this.ipfsSrv.addFileToIPFS(path, fileStream).pipe(
+            tap(ipfsHash => console.log(`IPFS file hash: ${ipfsHash}`)),
+            map(ipfsHash => IpfsUploadActions.success({ipfsHash})),
             
             catchError((err: Error) =>
-              of(ErrorActions.errorMessage({ errorMsg: err.message }))
+              of(ErrorActions.errorMessage({ errorMsg: err.message }), IpfsUploadActions.fail)
             )
           )
-          
-          }
-          
-        )
-      )
-  );
-*/
- 
+        })
+   
+      ));
+
+   
 }
