@@ -12,6 +12,7 @@ import { ipfsToken } from '../../core/services/tokens';
 import * as IpfsUploadActions  from './ipfs-upload.actions';
 import { ErrorActions, SpinnerActions } from '../../core/store/actions';
 import * as fromStore from './ipfs-upload.reducer';
+import { empty } from 'rxjs';
 
 @Injectable()
 export class IpfsUploadEffects {
@@ -46,11 +47,18 @@ export class IpfsUploadEffects {
           this.store$.select(fromStore.getFileData),
           (action, fileData) => ({ action, fileData})
          ),
-        tap(data => {
-          const imgBuffer =  Buffer.from(data.fileData);
-          console.log('from effect', imgBuffer)
-        }),
-        map(_ => IpfsUploadActions.success({ ipfsHash: 'Moby Dick' })),
+         map(data => data.fileData),
+       
+        switchMap((dataBuffer) => {
+          const imgBuffer =  Buffer.from(dataBuffer);
+          // console.log('from effect', imgBuffer)
+
+
+          return empty();
+        })
+   
+
+        //map(_ => IpfsUploadActions.success({ ipfsHash: 'Moby Dick' })),
 
       ));
 
