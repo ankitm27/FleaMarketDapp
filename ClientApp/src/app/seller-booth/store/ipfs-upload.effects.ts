@@ -27,7 +27,7 @@ export class IpfsUploadEffects {
           const fileStream =  Buffer.from(data.content);
           const path = data.path;
           
-          return this.ipfsSrv.addFileToIPFS(path, fileStream).pipe(
+          return this.ipfsSrv.addFileToIPFS(fileStream, path).pipe(
             tap(ipfsHash => console.log(`IPFS file hash: ${ipfsHash}`)),
             map(ipfsHash => IpfsUploadActions.success({ipfsHash})),
             

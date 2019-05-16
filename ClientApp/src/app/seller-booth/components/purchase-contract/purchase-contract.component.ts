@@ -83,7 +83,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
       
       const reader = new FileReader();
       reader.readAsDataURL(this.fileModel); 
-      reader.onload = (_event) => { 
+      reader.onloadend = (_event) => { 
           this.fileContent = reader.result as ArrayBuffer; 
           this.store$.dispatch(IpfsUploadActions.add);
        };

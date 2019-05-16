@@ -29,23 +29,37 @@ export class IpfsDaemonService {
     );
   }
 
-  public addFileToIPFS (fileName: string, fileStream: ArrayBuffer): Observable<string> {
+  public addFileToIPFS (fileStream: ArrayBuffer, fileName?: string): Observable<string> {
 
-    const fileDetails = {
-      path: fileName,
-      content: fileStream
-    };
     const options = {
-      wrapWithDirectory: true,
       progress: (prog) => console.log(`progress report: ${prog}`) 
     };
+    
+    if (fileName){
 
-    return from(this.ipfs.add(fileDetails, options)).pipe(
-      tap((res: any) =>
-        console.log(`IPFS node response: ${JSON.stringify(res)}`)
-      ),
-      map((res: any) => res[res.length - 1].hash )
-    );
+      const fileDetails = {
+        path: fileName,
+        content: fileStream
+      };
+      
+      return from(this.ipfs.add(fileDetails, options)).pipe(
+        tap((res: any) =>
+          console.log(`IPFS node response json: ${JSON.stringify(res)}`)
+        ),
+        map((res: any) => res[res.length - 1].hash )
+      );
+    }else {
+
+      return from(this.ipfs.add(fileStream, options)).pipe(
+        tap((res: any) =>
+          console.log(`IPFS node response json: ${JSON.stringify(res)}`)
+        ),
+        map((res: any) => res[0].hash )
+      );
+    }
+    
   }
+
+  
 
 }
