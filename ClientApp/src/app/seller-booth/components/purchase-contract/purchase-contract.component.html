@@ -60,37 +60,46 @@
          
           <mat-card-content *ngIf="fileModel">
   
-              <div fxLayout="row" fxLayoutAlign="start center">
-  
-                <div fxFlex="25" class="text-center">Image</div>
-                <div fxFlex="25" class="text-center">File</div>
-                <div fxFlex class="text-center">IPFS Hash</div>
-                <div fxFlex="15" class="text-center">Status</div>
-              </div> 
-            
-            <br>
-            
-            
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div fxFlex="25" class="text-center">Image</div>
+              <div fxFlex class="text-center">IPFS Hash</div>
+              <div fxFlex="15" class="text-center">Upload Status</div>
+            </div> 
+            <p></p>
+        
             <div fxLayout="row" fxLayoutAlign="start center">
   
-                <div fxFlex="25" class="text-center">
-                    <img matLine [src]="fileContent" height="200" width="200" />
-                </div>
-  
-                <div fxFlex="25" class="text-center">
-                    <mat-list>
-                        <mat-list-item >
-                          <h3 matLine> {{fileModel.name }} </h3>
-                          <p matLine>
-                            <mat-error mat-line *ngIf="requiredFile('fileArg')">You must choose a file</mat-error >
-                            <mat-error mat-line *ngIf="invalidPatternFile('fileArg')">Invalid file image extension</mat-error>
-                          </p>
-                        </mat-list-item>
-                      </mat-list>
-                </div>
-  
-                <div fxFlex class="text-center">
-                    {{ipfsHash$ | async}}
+                <ng-container
+                    *ngIf="formControl('fileArg').invalid; then showError; else showImage">
+                </ng-container>
+              
+                <ng-template #showError>
+                    <div fxFlex="25" class="text-center">
+                        <mat-list>
+                            <mat-list-item >
+                              <h3 matLine> {{fileModel.name }} </h3>
+                              <p matLine>
+                                <mat-error mat-line *ngIf="requiredFile('fileArg')">You must choose a file</mat-error >
+                                <mat-error mat-line *ngIf="invalidPatternFile('fileArg')">Invalid file image extension</mat-error>
+                              </p>
+                            </mat-list-item>
+                          </mat-list>
+                    </div>
+                </ng-template>
+                
+                <ng-template #showImage>
+                    <div fxFlex="25" class="text-center">
+                        <img [src]="fileContent" height="200" width="200" />
+                        <p> {{fileModel.name }} </p>
+                    </div>
+                </ng-template>
+                
+    
+                <div fxFlex>
+                    <div *ngIf="(ipfsHash$ | async) as ipfsHash;" class="text-center">
+                      <button mat-stroked-button color="warn">{{ipfsHash}}</button>
+                    </div>
+                   
                 </div>
 
                 <div fxFlex="15" class="text-center">

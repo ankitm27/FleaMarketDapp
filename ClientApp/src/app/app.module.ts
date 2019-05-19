@@ -45,7 +45,7 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
       },
     }),
 
-
+    
     EffectsModule.forRoot(fromRootStore.effects),
 
     // Instrumentation must be imported after importing StoreModule (config is optional)
