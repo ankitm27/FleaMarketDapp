@@ -1,10 +1,10 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { Provider } from './tokens';
 import { ethers, Signer } from 'ethers';
 
-import { Observable, of, from } from 'rxjs';
-import { map, tap, catchError } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

@@ -44,16 +44,18 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
         strictImmutability: true,
       },
     }),
+
+
     EffectsModule.forRoot(fromRootStore.effects),
 
     // Instrumentation must be imported after importing StoreModule (config is optional)
     StoreDevtoolsModule.instrument({
-      name: 'FleaMarket DApp Store State',
-      logOnly: environment.production, // Restrict extension to log-only mode
-    }),
+        name: 'FleaMarket DApp Store State',
+        logOnly: environment.production, // Restrict extension to log-only mode
+      }),
 
     // attaching to the route state to the app root state
-    StoreRouterConnectingModule.forRoot(),
+    StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
 
     CoreModule,
   ],

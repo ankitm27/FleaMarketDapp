@@ -1,12 +1,10 @@
-import { Injectable, Inject } from "@angular/core";
-
-import { ipfsToken } from "./tokens";
-
-import { Observable, of, from } from "rxjs";
-import { map, tap, catchError } from "rxjs/operators";
+import { Injectable, Inject } from '@angular/core';
+import { Observable, from } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { ipfsToken } from './tokens';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class IpfsDaemonService {
   constructor(@Inject(ipfsToken) private ipfs) {}
