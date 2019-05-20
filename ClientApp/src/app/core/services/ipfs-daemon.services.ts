@@ -56,12 +56,20 @@ export class IpfsDaemonService {
     
   }
 
-  public async getFile(hash: string) {
-    return from(this.ipfs.files.cat(hash)).pipe(
-      
+  public getFile(hash: string) {
+    return from(this.ipfs.files.get(hash)).pipe(
+      map((files: any) => files[0]),
+      map((file: any) =>  {
+           return {
+             path: file.path,   // string 
+             content: file.content // Buffer
+           }
+      } )
     )
-    //console.log(fileBuffer.toString());
+   
   }
+
+
 
   
 
