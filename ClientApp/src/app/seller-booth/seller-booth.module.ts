@@ -10,7 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './store/ipfs-upload.reducer';
 import { IpfsUploadEffects } from './store/ipfs-upload.effects';
 
-import { PurchaseContractComponent } from './components/purchase-contract/purchase-contract.component';
+import { PurchaseContractComponent } from './containers/purchase-contract/purchase-contract.component';
 
 const routes: Routes = [
   {
