@@ -96,6 +96,10 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   inProgress = (status: fromStore.FileUploadStatus) => status === 'Progress';
 
 
+  getImagePopup(){
+    
+  }
+
   ngOnDestroy(): void {
 
     this.store$.dispatch(IpfsUploadActions.add);

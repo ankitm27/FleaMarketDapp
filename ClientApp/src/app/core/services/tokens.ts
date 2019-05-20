@@ -23,7 +23,7 @@ export const ipfsToken = new InjectionToken('The IPFS Token', {
   providedIn: 'root',
   factory: () => {
     try {
-      return new (window as any).IpfsHttpClient('ipfs.infura.io', '5001', {
+      return (window as any).IpfsHttpClient('ipfs.infura.io', '5001', {
         protocol: 'https'
       });
     } catch (err) {

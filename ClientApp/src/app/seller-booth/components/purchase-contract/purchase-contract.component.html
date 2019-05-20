@@ -97,7 +97,11 @@
     
                 <div fxFlex>
                     <div *ngIf="(ipfsHash$ | async) as ipfsHash;" class="text-center">
-                      <button mat-stroked-button color="warn">{{ipfsHash}}</button>
+                     
+                      <button mat-stroked-button color="warn" matTooltip="Click to download image from IPFS" (click)="getImagePopup()">
+                        {{ipfsHash}}
+                        <mat-icon>visibility</mat-icon>
+                      </button>
                     </div>
                    
                 </div>
@@ -142,7 +146,6 @@
               <br>
               Control pristine: {{ formControl('fileArg').pristine | json}}
 
-              <img src="https://ipfs.infura.io:5001/api/v0/cat?arg=QmQdg7ZTN5oeP9z9Bq1osnHtWyH963VyTjVQY4ZwF3zQvL" width='400'>
           </mat-card-content>
       
            -->

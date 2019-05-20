@@ -27,12 +27,10 @@ export class IpfsDaemonService {
     );
   }
 
-  public addFileToIPFS (fileStream: ArrayBuffer, fileName?: string): Observable<string> {
-
+  public addFile(fileStream: ArrayBuffer, fileName?: string): Observable<string> {
     const options = {
       progress: (prog) => console.log(`progress report: ${prog}`) 
-    };
-    
+    }; 
     if (fileName){
 
       const fileDetails = {
@@ -56,6 +54,13 @@ export class IpfsDaemonService {
       );
     }
     
+  }
+
+  public async getFile(hash: string) {
+    return from(this.ipfs.files.cat(hash)).pipe(
+      
+    )
+    //console.log(fileBuffer.toString());
   }
 
   

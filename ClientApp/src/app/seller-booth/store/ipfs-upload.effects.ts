@@ -21,13 +21,11 @@ export class IpfsUploadEffects {
     () =>
       this.actions$.pipe(
         ofType(IpfsUploadActions.start),
-        
         exhaustMap((data) => {
-          
           const fileStream =  Buffer.from(data.content);
           const path = data.path;
           
-          return this.ipfsSrv.addFileToIPFS(fileStream, path).pipe(
+          return this.ipfsSrv.addFile(fileStream, path).pipe(
             tap(ipfsHash => console.log(`IPFS file hash: ${ipfsHash}`)),
             map(ipfsHash => IpfsUploadActions.success({ipfsHash})),
             
