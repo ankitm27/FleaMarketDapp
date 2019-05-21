@@ -23,7 +23,7 @@ const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(IpfsUploadActions.add, () => initialState),
+  on(IpfsUploadActions.reset, () => initialState),
   on(IpfsUploadActions.start, state => ({
     ...state,
     status: 'Progress',

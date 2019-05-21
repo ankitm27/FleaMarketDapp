@@ -79,7 +79,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
       reader.readAsDataURL(this.fileBlob); 
       reader.onload = (_event) => { 
           this.fileContent = reader.result as ArrayBuffer; 
-          this.store$.dispatch(IpfsUploadActions.add);
+          this.store$.dispatch(IpfsUploadActions.reset);
        };
     }
   }
@@ -103,7 +103,8 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
-    this.store$.dispatch(IpfsUploadActions.add);
+    // reset state
+    this.store$.dispatch(IpfsUploadActions.reset);
   }
 
 }
