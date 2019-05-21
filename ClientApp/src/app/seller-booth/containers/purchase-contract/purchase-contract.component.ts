@@ -1,7 +1,7 @@
 import {Component, ViewChild, ElementRef, OnInit, OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store/ipfs-upload.reducer';
@@ -20,22 +20,22 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   ipfsHash$: Observable<string>;
   uploadStatus$: Observable<fromStore.FileUploadStatus>;
+  private readonly IMAGE_PATTERN: RegExp = /^.+\.(png|jpg|jpeg|gif|png)$/;
 
+  
   constructor(
     private store$: Store<fromStore.AppState>,
     private formBuilder: FormBuilder
   ) {}
 
-  private unsubscribe$: Subject<void> = new Subject<void>();
-
   frmGroup: FormGroup = this.formBuilder.group({
     title: ['', Validators.required],
     price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
     fileArg: [
-      '',
-      [Validators.required, Validators.pattern(/^.+\.(jpg|gif|png|jpeg)$/)]
+      '', [Validators.required, Validators.pattern(this.IMAGE_PATTERN)]
     ]
   });
+
 
   ngOnInit() {
     
@@ -69,12 +69,6 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
     this.fileControl.nativeElement.click();
   }
 
-  uploadFile() {
-    this.store$.dispatch(IpfsUploadActions.start({ 
-      path: this.fileModel.name,
-      content: this.fileContent}));
-  }
-
   onFileChange(event) {
     if (event.target.files && event.target.files.length) {
       this.fileModel = event.target.files[0];
@@ -83,12 +77,19 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
       
       const reader = new FileReader();
       reader.readAsDataURL(this.fileModel); 
-      reader.onloadend = (_event) => { 
+      reader.onload = (_event) => { 
           this.fileContent = reader.result as ArrayBuffer; 
           this.store$.dispatch(IpfsUploadActions.add);
        };
     }
   }
+
+  uploadFile() {
+    this.store$.dispatch(IpfsUploadActions.start({ 
+      path: this.fileModel.name,
+      content: this.fileContent}));
+  }
+
 
   isPending = (status: fromStore.FileUploadStatus) => status === 'Pending';
   isSuccess = (status: fromStore.FileUploadStatus) => status === 'Success';
@@ -103,8 +104,6 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
 
     this.store$.dispatch(IpfsUploadActions.add);
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
 }
