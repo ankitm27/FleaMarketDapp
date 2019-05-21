@@ -15,7 +15,7 @@ import * as IpfsUploadActions from '../../store/ipfs-upload.actions';
 export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   @ViewChild('file') fileControl: ElementRef;
-  fileModel: File;
+  fileBlob: File;
   fileContent: ArrayBuffer;
 
   ipfsHash$: Observable<string>;
@@ -71,12 +71,12 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   onFileChange(event) {
     if (event.target.files && event.target.files.length) {
-      this.fileModel = event.target.files[0];
+      this.fileBlob = event.target.files[0];
 
-      this.frmGroup.get('fileArg').patchValue(this.fileModel.name);
+      this.frmGroup.get('fileArg').patchValue(this.fileBlob.name);
       
       const reader = new FileReader();
-      reader.readAsDataURL(this.fileModel); 
+      reader.readAsDataURL(this.fileBlob); 
       reader.onload = (_event) => { 
           this.fileContent = reader.result as ArrayBuffer; 
           this.store$.dispatch(IpfsUploadActions.add);
@@ -86,7 +86,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   uploadFile() {
     this.store$.dispatch(IpfsUploadActions.start({ 
-      path: this.fileModel.name,
+      path: this.fileBlob.name,
       content: this.fileContent}));
   }
 

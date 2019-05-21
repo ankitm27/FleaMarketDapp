@@ -48,7 +48,7 @@
                 <mat-icon>category</mat-icon>
               </button>
               
-              <button mat-raised-button color="accent" *ngIf="fileModel"
+              <button mat-raised-button color="accent" *ngIf="fileBlob"
                 (click)="uploadFile()"
                 [disabled]="formControl('fileArg').invalid">
                 Upload To IPFS
@@ -58,7 +58,7 @@
           </mat-card-actions>
   
          
-          <mat-card-content *ngIf="fileModel">
+          <mat-card-content *ngIf="fileBlob">
   
             <div fxLayout="row" fxLayoutAlign="start center">
               <div fxFlex="25" class="text-center">Image</div>
@@ -75,22 +75,17 @@
               
                 <ng-template #showError>
                     <div fxFlex="25" class="text-center">
-                        <mat-list>
-                            <mat-list-item >
-                              <h3 matLine> {{fileModel.name }} </h3>
-                              <p matLine>
-                                <mat-error mat-line *ngIf="requiredFile('fileArg')">You must choose a file</mat-error >
-                                <mat-error mat-line *ngIf="invalidPatternFile('fileArg')">Invalid file image extension</mat-error>
-                              </p>
-                            </mat-list-item>
-                          </mat-list>
+                        
+                        <mat-error mat-line *ngIf="requiredFile('fileArg')">You must choose a file</mat-error >
+                        <mat-error mat-line *ngIf="invalidPatternFile('fileArg')">Invalid file image extension</mat-error>
+  
                     </div>
                 </ng-template>
                 
                 <ng-template #showImage>
                     <div fxFlex="25" class="text-center">
                         <img [src]="fileContent" height="200" width="200" />
-                        <p> {{fileModel.name }} </p>
+                        <p> {{fileBlob.name }} </p>
                     </div>
                 </ng-template>
                 
@@ -110,7 +105,6 @@
                   
                   <div *ngIf="(uploadStatus$ | async) as status;">
 
-                  
                     <div *ngIf="inProgress(status); else idle">
                         <mat-progress-spinner 
                           color="warn"
