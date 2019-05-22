@@ -11,6 +11,7 @@ import { reducers } from './store/ipfs-upload.reducer';
 import { IpfsUploadEffects } from './store/ipfs-upload.effects';
 
 import { PurchaseContractComponent } from './containers/purchase-contract/purchase-contract.component';
+import { ShowIpfsImageComponent } from './components/show-ipfs-image/show-ipfs-image.component'
 
 const routes: Routes = [
   {
@@ -21,7 +22,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [PurchaseContractComponent],
+  declarations: [
+    PurchaseContractComponent,
+    ShowIpfsImageComponent],
    
   imports: [
     CommonModule,
