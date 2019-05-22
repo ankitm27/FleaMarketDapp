@@ -2,7 +2,6 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ipfsToken } from './tokens';
-import { FileModel } from '../../seller-booth/models/file-model-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -28,25 +27,18 @@ export class IpfsDaemonService {
     );
   }
 
-  public addFile(fileModel: FileModel): Observable<string> {
+  public addFile(file: File): Observable<string> {
     const options = {
       progress: (prog) => console.log(`progress report: ${prog}`) 
     }; 
    
-
-      const fileDetails = {
-        path: fileName,
-        content: fileStream
-      };
-      
-      return from(this.ipfs.add(fileDetails, options)).pipe(
+    return from(this.ipfs.add(file, options)).pipe(
         tap((res: any) =>
           console.log(`IPFS node response json: ${JSON.stringify(res)}`)
         ),
         map((res: any) => res[res.length - 1].hash )
       );
-    
-    }
+  }
     
 
   public getFile(hash: string) {

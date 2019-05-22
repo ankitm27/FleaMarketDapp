@@ -85,9 +85,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   }
 
   uploadFile() {
-    this.store$.dispatch(IpfsUploadActions.start({ 
-      path: this.fileBlob.name,
-      content: this.fileContent}));
+    this.store$.dispatch(IpfsUploadActions.start({file: this.fileBlob}));
   }
 
 
