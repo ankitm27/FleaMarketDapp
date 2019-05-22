@@ -30,8 +30,8 @@ export class IpfsDaemonService {
   public addFile(file: File): Observable<string> {
     
     const data = {
-      path: file.name, // The file path
-      content: file // A Buffer, Readable Stream, Pull Stream or File with the contents of the file
+      path: file.name, 
+      content: file 
     }
     
     const options = {

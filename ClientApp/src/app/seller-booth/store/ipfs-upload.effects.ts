@@ -23,7 +23,6 @@ export class IpfsUploadEffects {
         map(action => action.file),
         exhaustMap((file) => {
           // const fileStream =  (window as any).IpfsHttpClient.Buffer.from(data.content);
-          //  const path = data.path;
           
           return this.ipfsSrv.addFile(file).pipe(
             tap(ipfsHash => console.log(`IPFS file hash: ${ipfsHash}`)),
