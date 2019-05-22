@@ -28,11 +28,17 @@ export class IpfsDaemonService {
   }
 
   public addFile(file: File): Observable<string> {
+    
+    const data = {
+      path: file.name, // The file path
+      content: file // A Buffer, Readable Stream, Pull Stream or File with the contents of the file
+    }
+    
     const options = {
       progress: (prog) => console.log(`progress report: ${prog}`) 
     }; 
    
-    return from(this.ipfs.add(file, options)).pipe(
+    return from(this.ipfs.add(data, options)).pipe(
         tap((res: any) =>
           console.log(`IPFS node response json: ${JSON.stringify(res)}`)
         ),
