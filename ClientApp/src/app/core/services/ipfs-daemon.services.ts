@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ipfsToken } from './tokens';
+import { FileModel } from '../../seller-booth/models/file-model-interface'
 
 @Injectable({
   providedIn: 'root'
@@ -46,8 +47,7 @@ export class IpfsDaemonService {
       );
   }
     
-
-  public getFile(hash: string) {
+  public getFile(hash: string): Observable<FileModel> {
     return from(this.ipfs.files.get(hash)).pipe(
       map((files: any) => files[0]),
       map((file: any) =>  {
@@ -59,9 +59,7 @@ export class IpfsDaemonService {
     )
       
   }
-
-
-
   
+
 
 }
