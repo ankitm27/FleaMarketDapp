@@ -92,7 +92,7 @@
                 <div fxFlex>
                     <div *ngIf="(ipfsHash$ | async) as ipfsHash;" class="text-center">
                      
-                      <button mat-stroked-button color="warn" matTooltip="Click to download image from IPFS" (click)="getImagePopup()">
+                      <button mat-stroked-button color="warn" matTooltip="Click to show image from IPFS" (click)="loadImage()">
                         {{ipfsHash}}
                         <mat-icon>visibility</mat-icon>
                       </button>

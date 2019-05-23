@@ -25,7 +25,19 @@ const routes: Routes = [
   declarations: [
     PurchaseContractComponent,
     ShowIpfsImageComponent],
-   
+
+  
+  /*based on https://alligator.io/angular/anatomy-angular-module/
+     * This is for components that can�t be found by the Angular compiler during compilation time 
+     * because they are not referenced anywhere in component templates. 
+
+      Components that should go into entryComponents are not that common. 
+      A good example would be Angular Material dialogs, because they are created dynamically, 
+      and the Angular compiler wouldn�t know about them otherwise.
+     * */
+  entryComponents: [
+      ShowIpfsImageComponent,
+  ],
   imports: [
     CommonModule,
     MaterialModule,

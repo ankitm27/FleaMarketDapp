@@ -6,3 +6,4 @@ export const start = createAction('[IPFS/Upload] Start', props<{file: File}>());
 
 export const success = createAction('[IPFS/Upload] Success', props<{ ipfsHash: string }>()); // status Success
 export const fail = createAction('[IPFS/Upload] Fail'); // status Error
+export const load = createAction('[IPFS/Upload] Load'); // request to load image from IPFS

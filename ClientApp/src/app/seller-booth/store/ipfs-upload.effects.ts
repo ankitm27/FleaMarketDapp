@@ -1,18 +1,25 @@
 
 import { Injectable } from '@angular/core';
-import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { exhaustMap, map, tap, catchError } from 'rxjs/operators';
-import { of} from 'rxjs';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { exhaustMap, map, tap, withLatestFrom, catchError } from 'rxjs/operators';
+import { of, empty} from 'rxjs';
 
+import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { Store, select } from '@ngrx/store';
+import * as fromStore from '../store/ipfs-upload.reducer';
 import { IpfsDaemonService } from '../../core/services/ipfs-daemon.services';
 import * as IpfsUploadActions  from './ipfs-upload.actions';
 import { ErrorActions } from '../../core/store/actions';
 
+import { ShowIpfsImageComponent } from '../components/show-ipfs-image/show-ipfs-image.component';
+
 @Injectable()
 export class IpfsUploadEffects {
   constructor(
+    private store$: Store<fromStore.AppState>,
     private ipfsSrv: IpfsDaemonService,
-    private readonly actions$: Actions
+    private readonly actions$: Actions,
+    private dialog: MatDialog
   ) {}
 
 
@@ -35,6 +42,34 @@ export class IpfsUploadEffects {
         })
    
       ));
+
+      loadFile$ = createEffect(
+        () =>
+          this.actions$.pipe(
+            ofType(IpfsUploadActions.load),
+            withLatestFrom(this.store$.pipe(select(fromStore.getIpfsHash))),
+            map(([action, ipfsHash]) => ipfsHash),
+            exhaustMap((ipfsHash) => {
+              
+              const dialogConfig = new MatDialogConfig();
+              dialogConfig.width = '480px';
+              dialogConfig.disableClose = true;
+              dialogConfig.autoFocus = true;
+              dialogConfig.data = ipfsHash;
+
+
+              const dialogRef = this.dialog.open(ShowIpfsImageComponent, dialogConfig);
+
+              //  * Gets an observable that is notified when the dialog is finished closing.
+              return dialogRef.afterClosed();
+             
+            })
+       
+          ),
+          { dispatch: false });
+    
+
+
 
    
 }

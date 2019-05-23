@@ -19,7 +19,6 @@ export class Web3ProviderEffects {
   metaMaskEnable$ = createEffect(() =>
     this.actions$.pipe(
       ofType(Web3ProviderActions.init),
-
       exhaustMap(() => {
         if ('enable' in this.web3Provider) {
           return from(this.web3Provider.enable()).pipe(

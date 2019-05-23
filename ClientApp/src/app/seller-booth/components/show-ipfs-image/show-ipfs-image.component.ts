@@ -14,10 +14,8 @@ export class ShowIpfsImageComponent {
 
     constructor(
         public dialogRef: MatDialogRef<ShowIpfsImageComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: FileModel) { }
-
-    onOk(): void {
-        this.dialogRef.close();
-    }
+        // @Inject(MAT_DIALOG_DATA) public data: FileModel
+        @Inject(MAT_DIALOG_DATA) public data: string
+        ) { }
 
 }
