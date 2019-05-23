@@ -52,7 +52,7 @@ export class IpfsUploadEffects {
             exhaustMap((ipfsHash) => {
               
               const dialogConfig = new MatDialogConfig();
-              dialogConfig.width = '480px';
+              dialogConfig.width = '500px';
               dialogConfig.disableClose = true;
               dialogConfig.autoFocus = true;
               dialogConfig.data = ipfsHash;
