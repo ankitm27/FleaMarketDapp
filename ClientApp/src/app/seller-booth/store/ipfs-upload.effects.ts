@@ -12,6 +12,7 @@ import * as IpfsUploadActions  from './ipfs-upload.actions';
 import { ErrorActions } from '../../core/store/actions';
 
 import { ShowIpfsImageComponent } from '../components/show-ipfs-image/show-ipfs-image.component';
+import { FileModel } from '../models/file-model-interface';
 
 @Injectable()
 export class IpfsUploadEffects {
@@ -49,21 +50,30 @@ export class IpfsUploadEffects {
             ofType(IpfsUploadActions.load),
             withLatestFrom(this.store$.pipe(select(fromStore.getIpfsHash))),
             map(([action, ipfsHash]) => ipfsHash),
-            exhaustMap((ipfsHash) => {
-              
-              const dialogConfig = new MatDialogConfig();
-              dialogConfig.width = '500px';
-              dialogConfig.disableClose = true;
-              dialogConfig.autoFocus = true;
-              dialogConfig.data = ipfsHash;
+            exhaustMap((ipfsHash: string) => 
+              this.ipfsSrv.getFile(ipfsHash).pipe(
+              map((data: FileModel) => {
+
+                const dialogConfig = new MatDialogConfig();
+                dialogConfig.width = '500px';
+                dialogConfig.disableClose = true;
+                dialogConfig.autoFocus = true;
+                dialogConfig.data = data;
 
 
-              const dialogRef = this.dialog.open(ShowIpfsImageComponent, dialogConfig);
+                const dialogRef = this.dialog.open(ShowIpfsImageComponent, dialogConfig);
 
-              //  * Gets an observable that is notified when the dialog is finished closing.
-              return dialogRef.afterClosed();
+                //  * Gets an observable that is notified when the dialog is finished closing.
+                return dialogRef.afterClosed();
+
+              } ),
+              catchError((err: Error) =>
+               of(ErrorActions.errorMessage({ errorMsg: err.message }))
+              )
              
-            })
+             )
+
+           )
        
           ),
           { dispatch: false });

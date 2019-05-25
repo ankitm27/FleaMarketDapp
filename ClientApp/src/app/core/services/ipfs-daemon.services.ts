@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { Buffer } from 'buffer';
 import { ipfsToken } from './tokens';
 import { FileModel } from '../../seller-booth/models/file-model-interface'
 
@@ -48,12 +49,20 @@ export class IpfsDaemonService {
   }
     
   public getFile(hash: string): Observable<FileModel> {
-    return from(this.ipfs.files.get(hash)).pipe(
+    return from(this.ipfs.get(hash)).pipe(
       map((files: any) => files[0]),
       map((file: any) =>  {
+
+        // const contentBuffer = file.content as Buffer;
+
+        // see https://www.npmjs.com/package/buffer
+        // const arrayBuffer = contentBuffer.buffer.slice(
+        //  contentBuffer.byteOffset, contentBuffer.byteOffset + contentBuffer.byteLength
+        //);
+
            return {
-             path: file.path,   // string 
-             content: file.content // Buffer
+             path: file.path,  
+             content: file.content 
            }
       } )
     )

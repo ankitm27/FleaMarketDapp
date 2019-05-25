@@ -1,7 +1,7 @@
 
-<h1 mat-dialog-title>Hello Popi</h1>
+<h1 mat-dialog-title>{{data.path}}</h1>
 <mat-dialog-content>
-    <img mat-card-image src="https://gateway.ipfs.io/ipfs/{{data}}">
+    <img mat-card-image src="data:image/;base64,{{data.content}}">
 </mat-dialog-content>
 
 <mat-dialog-actions>
