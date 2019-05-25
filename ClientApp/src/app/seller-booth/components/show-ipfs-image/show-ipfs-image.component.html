@@ -1,7 +1,7 @@
 
 <h1 mat-dialog-title>{{data.path}}</h1>
 <mat-dialog-content>
-    <img mat-card-image src="data:image/;base64,{{data.content}}">
+    <img mat-card-image [src]="data.content">
 </mat-dialog-content>
 
 <mat-dialog-actions>
