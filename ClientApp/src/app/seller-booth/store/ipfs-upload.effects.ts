@@ -52,7 +52,7 @@ export class IpfsUploadEffects {
             map(([action, ipfsHash]) => ipfsHash),
             exhaustMap((ipfsHash: string) => 
               this.ipfsSrv.getFile(ipfsHash).pipe(
-              map((data: FileModel) => {
+              map((data) => {
 
                 const dialogConfig = new MatDialogConfig();
                 dialogConfig.width = '500px';

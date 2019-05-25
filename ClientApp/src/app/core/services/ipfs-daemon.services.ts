@@ -48,27 +48,7 @@ export class IpfsDaemonService {
       );
   }
     
-  public getFile(hash: string): Observable<FileModel> {
-    return from(this.ipfs.get(hash)).pipe(
-      map((files: any) => files[0]),
-      map((file: any) =>  {
-
-        // const contentBuffer = file.content as Buffer;
-
-        // see https://www.npmjs.com/package/buffer
-        // const arrayBuffer = contentBuffer.buffer.slice(
-        //  contentBuffer.byteOffset, contentBuffer.byteOffset + contentBuffer.byteLength
-        //);
-
-           return {
-             path: file.path,  
-             content: file.content 
-           }
-      } )
-    )
-      
-  }
-  
-
+  public getFile = (hash: string) => from(this.ipfs.cat(hash));
+ 
 
 }
