@@ -52,9 +52,13 @@ export class IpfsDaemonService {
   public getFile = (hash: string): Observable<Blob> => from(this.ipfs.cat(hash)).pipe(
     switchMap((buffer: Buffer) => {
 
+      // based on https://mraddon.blog/2018/07/15/how-to-push-load-image-file-from-to-ipfs-using-javascript-examples-part-iv/
       const byteString = buffer.toString('base64');
  
-      const url = `data:image/png;base64,${byteString}`;
+      // idea based on https://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+      const url = `data:application/octet-stream;base64,${byteString}`;
+
+      // idea based on https://brianflove.com/2017/11/02/angular-http-client-blob/
       return this.httpClient.get(url, {
         responseType: 'blob'
       });

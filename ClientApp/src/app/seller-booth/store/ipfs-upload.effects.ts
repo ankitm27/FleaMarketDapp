@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { exhaustMap, map, tap, withLatestFrom, catchError } from 'rxjs/operators';
 import { of, empty} from 'rxjs';
-import { Buffer } from 'buffer';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../store/ipfs-upload.reducer';
@@ -52,17 +51,6 @@ export class IpfsUploadEffects {
             exhaustMap((ipfsHash: string) => 
               this.ipfsSrv.getFile(ipfsHash).pipe(
               map((blob: Blob) => {
-
-                // const byteString = buffer.toString('base64');
-                
-                //let res = fetch
-                //var urlCreator = window.URL;
-                //var arrayBufferView = new Uint8Array(  this.data );
-                //var blob = new Blob( [ arrayBufferView], { type: 'image/png' } );
-                //this.imageUrl = urlCreator.createObjectURL( blob);
-        
-                //const bloby = this.convertBase64ToBlob('data:image/png;base64,' + byteString)
-               // const url = window.URL.createObjectURL(bloby);
 
                 const dialogConfig = new MatDialogConfig();
                 dialogConfig.width = '500px';
