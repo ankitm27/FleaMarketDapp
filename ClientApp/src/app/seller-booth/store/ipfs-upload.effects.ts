@@ -51,9 +51,9 @@ export class IpfsUploadEffects {
             map(([action, ipfsHash]) => ipfsHash),
             exhaustMap((ipfsHash: string) => 
               this.ipfsSrv.getFile(ipfsHash).pipe(
-              map((buffer: Buffer) => {
+              map((blob: Blob) => {
 
-                const byteString = buffer.toString('base64');
+                // const byteString = buffer.toString('base64');
                 
                 //let res = fetch
                 //var urlCreator = window.URL;
@@ -61,14 +61,14 @@ export class IpfsUploadEffects {
                 //var blob = new Blob( [ arrayBufferView], { type: 'image/png' } );
                 //this.imageUrl = urlCreator.createObjectURL( blob);
         
-                const bloby = this.convertBase64ToBlob('data:image/png;base64,' + byteString)
-                const url = window.URL.createObjectURL(bloby);
+                //const bloby = this.convertBase64ToBlob('data:image/png;base64,' + byteString)
+               // const url = window.URL.createObjectURL(bloby);
 
                 const dialogConfig = new MatDialogConfig();
                 dialogConfig.width = '500px';
                 dialogConfig.disableClose = true;
                 dialogConfig.autoFocus = true;
-                dialogConfig.data = bloby;
+                dialogConfig.data = blob;
 
 
                 const dialogRef = this.dialog.open(ShowIpfsImageComponent, dialogConfig);

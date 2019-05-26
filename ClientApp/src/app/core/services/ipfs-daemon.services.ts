@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, from } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable, from, empty } from 'rxjs';
+import { switchMap, map, tap } from 'rxjs/operators';
 import { ipfsToken } from './tokens';
 import { Buffer } from 'buffer';
 
@@ -8,7 +9,8 @@ import { Buffer } from 'buffer';
   providedIn: 'root'
 })
 export class IpfsDaemonService {
-  constructor(@Inject(ipfsToken) private ipfs) {}
+  constructor(@Inject(ipfsToken) private ipfs,
+  private httpClient: HttpClient) {}
 
   public getId(): Observable<string> {
     return from(this.ipfs.id()).pipe(
@@ -47,9 +49,17 @@ export class IpfsDaemonService {
       );
   }
     
-  public getFile = (hash: string): Observable<Buffer> => from(this.ipfs.cat(hash)).pipe(
-    map(stream => stream as Buffer)
-  );
+  public getFile = (hash: string): Observable<Blob> => from(this.ipfs.cat(hash)).pipe(
+    switchMap((buffer: Buffer) => {
+
+      const byteString = buffer.toString('base64');
+ 
+      const url = `data:image/png;base64,${byteString}`;
+      return this.httpClient.get(url, {
+        responseType: 'blob'
+      });
+    }
+  ));
  
 
 }
