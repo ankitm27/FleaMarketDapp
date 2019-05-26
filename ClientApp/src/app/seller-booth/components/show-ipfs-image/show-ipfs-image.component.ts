@@ -1,7 +1,7 @@
 
 import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild , ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { WindowRefService } from '../../../core/services/window.service';
+import { windowRefToken } from '../../../core/services/tokens';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -13,18 +13,16 @@ export class ShowIpfsImageComponent implements OnInit {
 
   @ViewChild('ipfsImage') image: ElementRef;
 
-  private _window: Window;
   constructor(
         public dialogRef: MatDialogRef<ShowIpfsImageComponent>,
         @Inject(MAT_DIALOG_DATA) public data: Blob,
-        private windowRefService: WindowRefService
+        @Inject(windowRefToken) private windowRef: Window
         ) { }
 
 
         ngOnInit() {
 
-          this._window = this.windowRefService.nativeWindow;
-          this.image.nativeElement.src = this._window.URL.createObjectURL(this.data);
+          this.image.nativeElement.src = this.windowRef.URL.createObjectURL(this.data);
         
         }
 }

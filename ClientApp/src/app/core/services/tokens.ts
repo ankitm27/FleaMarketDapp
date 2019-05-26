@@ -17,7 +17,7 @@ export class Provider extends providers.Web3Provider {
   constructor(@Inject(MetamaskWeb3Provider) web3Provider) {
     super(web3Provider);
   }
-}
+};
 
 export const ipfsToken = new InjectionToken('The IPFS Token', {
   providedIn: 'root',
@@ -32,3 +32,11 @@ export const ipfsToken = new InjectionToken('The IPFS Token', {
     }
   }
 });
+
+export const windowRefToken = new InjectionToken<Window>(
+  'Native window object',
+  {
+    providedIn: 'root',
+    factory: () => window
+  }
+);
