@@ -1,7 +1,7 @@
 
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild , ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
+import { WindowRefService } from '../../../core/services/window.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,25 +11,20 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ShowIpfsImageComponent implements OnInit {
 
-  imageUrl: any;
+  @ViewChild('ipfsImage') image: ElementRef;
+
+  private _window: Window;
   constructor(
         public dialogRef: MatDialogRef<ShowIpfsImageComponent>,
         @Inject(MAT_DIALOG_DATA) public data: Blob,
-        private sanitizer: DomSanitizer
+        private windowRefService: WindowRefService
         ) { }
 
 
         ngOnInit() {
 
-        this.imageUrl = 
-         this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(this.data));
+          this._window = this.windowRefService.nativeWindow;
+          this.image.nativeElement.src = this._window.URL.createObjectURL(this.data);
         
-          //  this.imageUrl = this.data.toString('base64');
-        //var urlCreator = window.URL;
-        //var arrayBufferView = new Uint8Array(  this.data );
-        //var blob = new Blob( [ arrayBufferView], { type: 'image/png' } );
-        //this.imageUrl = urlCreator.createObjectURL( blob);
-
-   
         }
 }
