@@ -3,16 +3,15 @@ import { Injectable } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { exhaustMap, map, tap, withLatestFrom, catchError } from 'rxjs/operators';
 import { of, empty} from 'rxjs';
-
+import { Buffer } from 'buffer';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../store/ipfs-upload.reducer';
 import { IpfsDaemonService } from '../../core/services/ipfs-daemon.services';
 import * as IpfsUploadActions  from './ipfs-upload.actions';
 import { ErrorActions } from '../../core/store/actions';
-
 import { ShowIpfsImageComponent } from '../components/show-ipfs-image/show-ipfs-image.component';
-import { FileModel } from '../models/file-model-interface';
+
 
 @Injectable()
 export class IpfsUploadEffects {
@@ -52,13 +51,24 @@ export class IpfsUploadEffects {
             map(([action, ipfsHash]) => ipfsHash),
             exhaustMap((ipfsHash: string) => 
               this.ipfsSrv.getFile(ipfsHash).pipe(
-              map((data) => {
+              map((buffer: Buffer) => {
+
+                const byteString = buffer.toString('base64');
+                
+                //let res = fetch
+                //var urlCreator = window.URL;
+                //var arrayBufferView = new Uint8Array(  this.data );
+                //var blob = new Blob( [ arrayBufferView], { type: 'image/png' } );
+                //this.imageUrl = urlCreator.createObjectURL( blob);
+        
+                const bloby = this.convertBase64ToBlob('data:image/png;base64,' + byteString)
+                const url = window.URL.createObjectURL(bloby);
 
                 const dialogConfig = new MatDialogConfig();
                 dialogConfig.width = '500px';
                 dialogConfig.disableClose = true;
                 dialogConfig.autoFocus = true;
-                dialogConfig.data = data;
+                dialogConfig.data = bloby;
 
 
                 const dialogRef = this.dialog.open(ShowIpfsImageComponent, dialogConfig);
@@ -78,7 +88,26 @@ export class IpfsUploadEffects {
           ),
           { dispatch: false });
     
-
+          /**
+           * CONVERT BASE64 TO BLOB
+           * @param Base64Image Pass base64 image data to convert into the blob
+           */
+          private convertBase64ToBlob(Base64Image: any) {
+            // SPLIT INTO TWO PARTS
+            const parts = Base64Image.split(';base64,');
+            // HOLD THE CONTENT TYPE
+            const imageType = parts[0].split(':')[1];
+            // DECODE BASE64 STRING
+            const decodedData = window.atob(parts[1]);
+            // CREATE UNIT8ARRAY OF SIZE SAME AS ROW DATA LENGTH
+            const uInt8Array = new Uint8Array(decodedData.length);
+            // INSERT ALL CHARACTER CODE INTO UINT8ARRAY
+            for (let i = 0; i < decodedData.length; ++i) {
+                uInt8Array[i] = decodedData.charCodeAt(i);
+            }
+            // RETURN BLOB IMAGE AFTER CONVERSION
+            return new Blob([uInt8Array], { type: imageType });
+          }
 
 
    
