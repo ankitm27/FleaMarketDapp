@@ -22,6 +22,24 @@ export class ShowIpfsImageComponent implements OnInit {
 
         ngOnInit() {
 
+          /*
+
+
+                const dialogConfig = new MatDialogConfig();
+                dialogConfig.width = '500px';
+                dialogConfig.disableClose = true;
+                dialogConfig.autoFocus = true;
+                dialogConfig.data = blob;
+
+
+                const dialogRef = this.dialog.open(ShowIpfsImageComponent, dialogConfig);
+
+                //  * Gets an observable that is notified when the dialog is finished closing.
+                return dialogRef.afterClosed();
+
+             
+          */
+
           this.image.nativeElement.src = this.windowRef.URL.createObjectURL(this.data);
         
         }

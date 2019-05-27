@@ -50,31 +50,15 @@ export class IpfsUploadEffects {
             map(([action, ipfsHash]) => ipfsHash),
             exhaustMap((ipfsHash: string) => 
               this.ipfsSrv.getFile(ipfsHash).pipe(
-              map((blob: Blob) => {
-
-                const dialogConfig = new MatDialogConfig();
-                dialogConfig.width = '500px';
-                dialogConfig.disableClose = true;
-                dialogConfig.autoFocus = true;
-                dialogConfig.data = blob;
-
-
-                const dialogRef = this.dialog.open(ShowIpfsImageComponent, dialogConfig);
-
-                //  * Gets an observable that is notified when the dialog is finished closing.
-                return dialogRef.afterClosed();
-
-              } ),
-              catchError((err: Error) =>
-               of(ErrorActions.errorMessage({ errorMsg: err.message }))
+                map((image: Blob) => IpfsUploadActions.load_image_success({ image })),
+                catchError((err: Error) =>
+                  of(ErrorActions.errorMessage({ errorMsg: err.message }))
               )
-             
              )
-
-           )
+            )
        
-          ),
-          { dispatch: false });
+          )
+        );
     
    
 }
