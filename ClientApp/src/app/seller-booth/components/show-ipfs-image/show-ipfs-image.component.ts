@@ -32,7 +32,7 @@ export class ShowIpfsImageComponent implements OnInit, OnDestroy {
     this.checkStore().pipe(
       takeUntil(this.unsubscribe$),
       tap((blob) => {
-        console.log('Blob', blob);
+        // console.log('Blob', blob);
         this.image.nativeElement.src = this.windowRef.URL.createObjectURL(blob);
       } )
     ).subscribe()
