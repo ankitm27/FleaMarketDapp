@@ -47,7 +47,13 @@ export class ShowIpfsImageComponent implements OnInit, OnDestroy {
           this.store$.dispatch(IpfsActions.load_image);
         }
       }),
-     
+      // Notice that the filter() returns the observable sequence that contains elements
+        // from the input sequence that satisfy the condition.
+        // so in this case, if the image blob is null, the steam will not continue, but
+        // when the image blob is not empty, we grab this value. 
+        // Which means we are waiting for the
+        // image blob value has become not null and then we continue the stream and take this one value .
+        // after that the whole stream will be completed.
       filter(image => !!image),
       take(1)
     );
