@@ -29,10 +29,9 @@ export class ShowIpfsImageComponent implements OnInit {
 
   ngOnInit() {
     this.image$ = this.checkStore().pipe(
-      tap((blob) => {
-        // console.log('Blob', blob);
-        this.image.nativeElement.src = this.windowRef.URL.createObjectURL(blob);
-      } )
+      tap((blob) => 
+        this.image.nativeElement.src = this.windowRef.URL.createObjectURL(blob)
+       )
     );
 
   }
