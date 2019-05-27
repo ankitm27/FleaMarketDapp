@@ -1,9 +1,9 @@
 
-import { ChangeDetectionStrategy, Component, Inject, OnInit, OnDestroy, ViewChild , ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild , ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { windowRefToken } from '../../../core/services/tokens';
-import { Observable, Subject } from 'rxjs';
-import {takeUntil, map, tap, filter, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { takeUntil, map, tap, filter, take } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store/ipfs-upload.reducer';
@@ -15,9 +15,10 @@ import * as IpfsActions from '../../store/ipfs-upload.actions';
   templateUrl: 'show-ipfs-image.component.html',
   styleUrls: ['show-ipfs-image.component.css']
 })
-export class ShowIpfsImageComponent implements OnInit, OnDestroy {
+export class ShowIpfsImageComponent implements OnInit {
 
   @ViewChild('ipfsImage') image: ElementRef;
+  image$: Observable<Blob>;
 
   constructor(
         private store$: Store<fromStore.AppState>,
@@ -25,17 +26,14 @@ export class ShowIpfsImageComponent implements OnInit, OnDestroy {
         @Inject(windowRefToken) private windowRef: Window
         ) { }
 
-  private unsubscribe$: Subject<void> = new Subject<void>();
 
   ngOnInit() {
-
-    this.checkStore().pipe(
-      takeUntil(this.unsubscribe$),
+    this.image$ = this.checkStore().pipe(
       tap((blob) => {
         // console.log('Blob', blob);
         this.image.nativeElement.src = this.windowRef.URL.createObjectURL(blob);
       } )
-    ).subscribe()
+    );
 
   }
 
@@ -57,11 +55,8 @@ export class ShowIpfsImageComponent implements OnInit, OnDestroy {
       filter(image => !!image),
       take(1)
     );
-}
+ }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+ 
 
 }
