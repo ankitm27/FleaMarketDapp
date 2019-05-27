@@ -13,27 +13,29 @@ export type FileUploadStatus = 'Pending' | 'Success' | 'Error' | 'Progress';
 
 export interface State {
     status: FileUploadStatus;
-    ipfsHash: string | null
+    ipfsHash: string | null;
+    image?: Blob;
 }
 
 const initialState: State = {
     status: 'Pending',
     ipfsHash: null,
+    image: null
 };
 
 export const reducer = createReducer(
   initialState,
   on(IpfsUploadActions.reset, () => initialState),
-  on(IpfsUploadActions.start, state => ({
+  on(IpfsUploadActions.upload_image, state => ({
     ...state,
     status: 'Progress',
   })),
-  on(IpfsUploadActions.success, (state, { ipfsHash }) => ({
+  on(IpfsUploadActions.upload_image_success, (state, { ipfsHash }) => ({
     ...state,
     status: 'Success',
     ipfsHash
   })),
-  on(IpfsUploadActions.fail, state => ({
+  on(IpfsUploadActions.upload_image_fail, state => ({
     ...state,
     status: 'Error',
     ipfsHash: null

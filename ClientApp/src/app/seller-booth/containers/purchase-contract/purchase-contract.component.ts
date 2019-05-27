@@ -85,7 +85,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   }
 
   uploadFile() {
-    this.store$.dispatch(IpfsUploadActions.start({file: this.fileBlob}));
+    this.store$.dispatch(IpfsUploadActions.upload_image({file: this.fileBlob}));
   }
 
 
@@ -96,7 +96,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
 
   loadImage(){
-    this.store$.dispatch(IpfsUploadActions.load);
+    this.store$.dispatch(IpfsUploadActions.load_image);
   }
 
   ngOnDestroy(): void {

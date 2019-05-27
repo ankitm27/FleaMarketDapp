@@ -25,17 +25,17 @@ export class IpfsUploadEffects {
   uploadFile$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(IpfsUploadActions.start),
+        ofType(IpfsUploadActions.upload_image),
         map(action => action.file),
         exhaustMap((file) => {
           // const fileStream =  (window as any).IpfsHttpClient.Buffer as Buffer;
 
           return this.ipfsSrv.addFile(file).pipe(
             tap(ipfsHash => console.log(`IPFS file hash: ${ipfsHash}`)),
-            map(ipfsHash => IpfsUploadActions.success({ipfsHash})),
+            map(ipfsHash => IpfsUploadActions.upload_image_success({ipfsHash})),
             
             catchError((err: Error) =>
-              of(ErrorActions.errorMessage({ errorMsg: err.message }), IpfsUploadActions.fail)
+              of(ErrorActions.errorMessage({ errorMsg: err.message }), IpfsUploadActions.upload_image_fail)
             )
           )
         })
@@ -45,7 +45,7 @@ export class IpfsUploadEffects {
       loadFile$ = createEffect(
         () =>
           this.actions$.pipe(
-            ofType(IpfsUploadActions.load),
+            ofType(IpfsUploadActions.load_image),
             withLatestFrom(this.store$.pipe(select(fromStore.getIpfsHash))),
             map(([action, ipfsHash]) => ipfsHash),
             exhaustMap((ipfsHash: string) => 
