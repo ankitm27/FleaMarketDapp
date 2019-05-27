@@ -9,7 +9,6 @@ import * as fromStore from '../store/ipfs-upload.reducer';
 import { IpfsDaemonService } from '../../core/services/ipfs-daemon.services';
 import * as IpfsUploadActions  from './ipfs-upload.actions';
 import { ErrorActions } from '../../core/store/actions';
-import { ShowIpfsImageComponent } from '../components/show-ipfs-image/show-ipfs-image.component';
 
 
 @Injectable()
@@ -18,7 +17,6 @@ export class IpfsUploadEffects {
     private store$: Store<fromStore.AppState>,
     private ipfsSrv: IpfsDaemonService,
     private readonly actions$: Actions,
-    private dialog: MatDialog
   ) {}
 
 

@@ -1,11 +1,13 @@
 import {Component, ViewChild, ElementRef, OnInit, OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import {MatDialog, MatDialogRef, MatDialogConfig} from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store/ipfs-upload.reducer';
-import * as IpfsUploadActions from '../../store/ipfs-upload.actions';
+import * as IpfsActions from '../../store/ipfs-upload.actions';
+
+import { ShowIpfsImageComponent } from '../../components/show-ipfs-image/show-ipfs-image.component';
 
 @Component({
   selector: 'app-new-purchase',
@@ -25,7 +27,8 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   
   constructor(
     private store$: Store<fromStore.AppState>,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog
   ) {}
 
   frmGroup: FormGroup = this.formBuilder.group({
@@ -79,13 +82,13 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
       reader.readAsDataURL(this.fileBlob); 
       reader.onload = (_event) => { 
           this.fileContent = reader.result as ArrayBuffer; 
-          this.store$.dispatch(IpfsUploadActions.reset);
+          this.store$.dispatch(IpfsActions.reset);
        };
     }
   }
 
   uploadFile() {
-    this.store$.dispatch(IpfsUploadActions.upload_image({file: this.fileBlob}));
+    this.store$.dispatch(IpfsActions.upload_image({file: this.fileBlob}));
   }
 
 
@@ -96,13 +99,19 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
 
   loadImage(){
-    this.store$.dispatch(IpfsUploadActions.load_image);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '500px';
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+ 
+    this.dialog.open(ShowIpfsImageComponent, dialogConfig);
+    
   }
 
   ngOnDestroy(): void {
 
     // reset state
-    this.store$.dispatch(IpfsUploadActions.reset);
+    this.store$.dispatch(IpfsActions.reset);
   }
 
 }

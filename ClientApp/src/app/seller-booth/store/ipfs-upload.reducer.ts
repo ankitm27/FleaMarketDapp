@@ -74,3 +74,4 @@ export const getIpfsUploadState = createSelector(getIpfsUploadStateSlice, state 
 export const getIpfsUploadStatus = createSelector(getIpfsUploadState, (state: State) => state.status);
 export const getIpfsHash = createSelector(getIpfsUploadState, (state: State) => state.ipfsHash);
 
+export const getImageBlob = createSelector(getIpfsUploadState, (state: State) => state.imageBlob);
