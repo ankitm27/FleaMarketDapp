@@ -16,7 +16,7 @@ import { ShowIpfsImageComponent } from '../../components/show-ipfs-image/show-ip
 })
 export class PurchaseContractComponent implements OnInit, OnDestroy {
 
-  @ViewChild('file') fileControl: ElementRef;
+  @ViewChild('file', {static: false}) fileControl: ElementRef;
   fileBlob: File;
   fileContent: ArrayBuffer;
 

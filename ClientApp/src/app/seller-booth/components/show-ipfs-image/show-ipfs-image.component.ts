@@ -17,7 +17,7 @@ import * as IpfsActions from '../../store/ipfs-upload.actions';
 })
 export class ShowIpfsImageComponent implements OnInit {
 
-  @ViewChild('ipfsImage') image: ElementRef;
+  @ViewChild('ipfsImage', {static: false}) image: ElementRef;
   image$: Observable<Blob>;
 
   constructor(
