@@ -14,7 +14,8 @@ export const routes: Routes = [
   },
   {
     path: 'seller-booth',
-    loadChildren: './seller-booth/seller-booth.module#SellerBoothModule',
+    // here we use the TypeScript Dynamic Imports in Angular 8
+    loadChildren: () => import('./seller-booth/seller-booth.module').then(mod => mod.SellerBoothModule),
     canActivate: [guards.EthInitGuard],
   },
   { path: '**', component: NotFoundPageComponent }, // !!!has to be the last one 
