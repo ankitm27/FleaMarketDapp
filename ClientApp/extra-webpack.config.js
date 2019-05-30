@@ -1,6 +1,6 @@
 module.exports = {
   node: {
-    constants: true,
+    crypto: true,
     path: true,
     os: true,
     stream: true,
