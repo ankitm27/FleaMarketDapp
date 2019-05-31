@@ -100,7 +100,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   loadImage(){
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '500px';
+    dialogConfig.width = '460px';
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
  
