@@ -17,7 +17,7 @@ import * as IpfsActions from '../../store/ipfs-upload.actions';
 })
 export class ShowIpfsImageComponent implements OnInit {
 
-  @ViewChild('ipfsImage', {static: false}) image: ElementRef;
+  @ViewChild('ipfsImage', {static: true}) image: ElementRef;
   image$: Observable<Blob>;
 
   constructor(
@@ -30,7 +30,7 @@ export class ShowIpfsImageComponent implements OnInit {
   ngOnInit() {
     this.image$ = this.checkStore().pipe(
       tap((blob) => 
-        this.image.nativeElement.src = this.windowRef.URL.createObjectURL(blob)
+          this.image.nativeElement.src = this.windowRef.URL.createObjectURL(blob)
        )
     );
 
