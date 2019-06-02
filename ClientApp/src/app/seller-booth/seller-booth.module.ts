@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule, FlexLayoutModule } from '../shared';
 
-// NGRX
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './store/ipfs-upload.reducer';
@@ -33,7 +32,7 @@ const routes: Routes = [
 
       Components that should go into entryComponents are not that common. 
       A good example would be Angular Material dialogs, because they are created dynamically, 
-      and the Angular compiler wouldn�t know about them otherwise.
+      and the Angular compiler would not know about them otherwise.
      * */
   entryComponents: [
       ShowIpfsImageComponent,
