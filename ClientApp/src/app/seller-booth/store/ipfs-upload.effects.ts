@@ -5,7 +5,7 @@ import { exhaustMap, map, tap, withLatestFrom, catchError } from 'rxjs/operators
 import { of, empty} from 'rxjs';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import * as fromStore from '../store/ipfs-upload.reducer';
+import * as fromStore from './ipfs-upload.reducer';
 import { IpfsDaemonService } from '../../core/services/ipfs-daemon.services';
 import * as IpfsUploadActions  from './ipfs-upload.actions';
 import { ErrorActions } from '../../core/store/actions';
