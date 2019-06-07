@@ -1,13 +1,12 @@
 
-<h2 mat-dialog-title>IPFS Image</h2>
+<h2 mat-dialog-title>IPFS Product Image</h2>
 
 <div *ngIf="(image$ | async) as image else loading">
 </div>
 
- <mat-dialog-content>
-    <mat-card>
-         <img mat-card-image  #ipfsImage>
-    </mat-card>
+ <mat-dialog-content class="text-center">
+    
+    <img #ipfsImage height="300px" width="300px">
     
     <ng-template #loading>
         <mat-progress-spinner 
