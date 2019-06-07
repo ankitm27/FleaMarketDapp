@@ -1,7 +1,6 @@
 
 import { ActionReducerMap, ActionReducer, MetaReducer } from '@ngrx/store';
 import { InjectionToken } from '@angular/core';
-import { storeFreeze } from 'ngrx-store-freeze';
 import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 import { createFeatureSelector, createSelector, Action } from '@ngrx/store';
 
@@ -53,7 +52,7 @@ export function logger(reducer: ActionReducer<AppState>): ActionReducer<AppState
 }
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production
-  ? [logger, storeFreeze]
+  ? [logger]
   : [];
 
 
