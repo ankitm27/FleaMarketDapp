@@ -1,4 +1,4 @@
-pragma solidity ^0.5.5;
+pragma solidity ^0.5.9;
 
 // Importing OpenZeppelin's SafeMath Implementation
 /*

@@ -4,7 +4,7 @@
   "description": "",
   "author": "Alex Yevseyevich",
   "dependencies": {
-    "openzeppelin-solidity": "^2.2.0",
+    "openzeppelin-solidity": "^2.3.0",
     "truffle-hdwallet-provider": "^1.0.5"
   }
 }
