@@ -6,8 +6,8 @@ import { MaterialModule, FlexLayoutModule } from '../shared';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { reducers } from './store/ipfs-upload.reducer';
-import { IpfsUploadEffects } from './store/ipfs-upload.effects';
+import { reducers } from './store/reducers';
+import { IpfsUploadEffects } from './store/effects/ipfs-upload.effects';
 
 import { PurchaseContractComponent } from './containers/purchase-contract/purchase-contract.component';
 import { ShowIpfsImageComponent } from './components/show-ipfs-image/show-ipfs-image.component'
@@ -45,7 +45,7 @@ const routes: Routes = [
 
     RouterModule.forChild(routes),
 
-    StoreModule.forFeature('ipfsUploadState', reducers),
+    StoreModule.forFeature('purchaseContract', reducers),
     EffectsModule.forFeature([IpfsUploadEffects])
   ],
 })

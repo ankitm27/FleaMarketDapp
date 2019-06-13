@@ -1,13 +1,13 @@
 
 import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild , ElementRef } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { windowRefToken } from '../../../core/services/tokens';
 import { Observable } from 'rxjs';
 import { takeUntil, map, tap, filter, take } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
-import * as fromStore from '../../store/ipfs-upload.reducer';
-import * as IpfsActions from '../../store/ipfs-upload.actions';
+import * as fromPurchaseContract from '../../store/reducers';
+import * as IpfsActions from '../../store/actions/ipfs-upload.actions';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,7 +21,7 @@ export class ShowIpfsImageComponent implements OnInit {
   image$: Observable<Blob>;
 
   constructor(
-        private store$: Store<fromStore.AppState>,
+        private store$: Store<fromPurchaseContract.AppState>,
         public dialogRef: MatDialogRef<ShowIpfsImageComponent>,
         @Inject(windowRefToken) private windowRef: Window
         ) { }
@@ -38,7 +38,7 @@ export class ShowIpfsImageComponent implements OnInit {
 
   checkStore(): Observable<Blob> {
     return this.store$.pipe(
-      select(fromStore.getImageBlob),
+      select(fromPurchaseContract.getImageBlob),
        tap(image => {
         if (!image) {
           this.store$.dispatch(IpfsActions.load_image);

@@ -4,8 +4,9 @@ import {MatDialog, MatDialogRef, MatDialogConfig} from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
-import * as fromStore from '../../store/ipfs-upload.reducer';
-import * as IpfsActions from '../../store/ipfs-upload.actions';
+import * as fromPurchaseContract from '../../store/reducers';
+import { IpfsUploadActions }  from '../../store/actions';
+import { FileUploadStatus} from '../../store/reducers/ipfs-upload.reducer';
 
 import { ShowIpfsImageComponent } from '../../components/show-ipfs-image/show-ipfs-image.component';
 
@@ -21,12 +22,12 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   fileContent: ArrayBuffer;
 
   ipfsHash$: Observable<string>;
-  uploadStatus$: Observable<fromStore.FileUploadStatus>;
+  uploadStatus$: Observable<FileUploadStatus>;
   private readonly IMAGE_PATTERN: RegExp = /^.+\.(png|jpg|jpeg|gif|png)$/;
 
   
   constructor(
-    private store$: Store<fromStore.AppState>,
+    private store$: Store<fromPurchaseContract.AppState>,
     private formBuilder: FormBuilder,
     public dialog: MatDialog
   ) {}
@@ -42,8 +43,8 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     
-    this.uploadStatus$ = this.store$.pipe(select(fromStore.getIpfsUploadStatus));
-    this.ipfsHash$ = this.store$.pipe(select(fromStore.getIpfsHash));         
+    this.uploadStatus$ = this.store$.pipe(select(fromPurchaseContract.getIpfsUploadStatus));
+    this.ipfsHash$ = this.store$.pipe(select(fromPurchaseContract.getIpfsHash));         
   }
 
   formControl = (name: string) => this.frmGroup.get(`${name}`);
@@ -82,20 +83,20 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
       reader.readAsDataURL(this.fileBlob); 
       reader.onload = (_event) => { 
           this.fileContent = reader.result as ArrayBuffer; 
-          this.store$.dispatch(IpfsActions.reset);
+          this.store$.dispatch(IpfsUploadActions.reset);
        };
     }
   }
 
   uploadFile() {
-    this.store$.dispatch(IpfsActions.upload_image({file: this.fileBlob}));
+    this.store$.dispatch(IpfsUploadActions.upload_image({file: this.fileBlob}));
   }
 
 
-  isPending = (status: fromStore.FileUploadStatus) => status === 'Pending';
-  isSuccess = (status: fromStore.FileUploadStatus) => status === 'Success';
-  isError = (status: fromStore.FileUploadStatus) => status === 'Error';
-  inProgress = (status: fromStore.FileUploadStatus) => status === 'Progress';
+  isPending = (status: FileUploadStatus) => status === FileUploadStatus.Pending;
+  isSuccess = (status: FileUploadStatus) => status === FileUploadStatus.Success;
+  isError = (status: FileUploadStatus) => status === FileUploadStatus.Error;
+  inProgress = (status: FileUploadStatus) => status === FileUploadStatus.Progress;
 
 
   loadImage(){
@@ -111,7 +112,7 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
 
     // reset state
-    this.store$.dispatch(IpfsActions.reset);
+    this.store$.dispatch(IpfsUploadActions.reset);
   }
 
 }

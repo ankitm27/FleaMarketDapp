@@ -1,20 +1,22 @@
 
 import { Injectable } from '@angular/core';
-import { MatDialogConfig, MatDialog } from '@angular/material';
 import { exhaustMap, map, tap, withLatestFrom, catchError } from 'rxjs/operators';
 import { of, empty} from 'rxjs';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import * as fromStore from './ipfs-upload.reducer';
-import { IpfsDaemonService } from '../../core/services/ipfs-daemon.services';
-import * as IpfsUploadActions  from './ipfs-upload.actions';
-import { ErrorActions } from '../../core/store/actions';
+
+import { IpfsDaemonService } from '../../../core/services/ipfs-daemon.services';
+
+import * as fromPurchaseContract from '../reducers';
+import { IpfsUploadActions }  from '../actions';
+import { ErrorActions } from '../../../core/store/actions';
+
 
 
 @Injectable()
 export class IpfsUploadEffects {
   constructor(
-    private store$: Store<fromStore.AppState>,
+    private store$: Store<fromPurchaseContract.AppState>,
     private ipfsSrv: IpfsDaemonService,
     private readonly actions$: Actions,
   ) {}
@@ -44,7 +46,7 @@ export class IpfsUploadEffects {
         () =>
           this.actions$.pipe(
             ofType(IpfsUploadActions.load_image),
-            withLatestFrom(this.store$.pipe(select(fromStore.getIpfsHash))),
+            withLatestFrom(this.store$.pipe(select(fromPurchaseContract.getIpfsHash))),
             map(([action, ipfsHash]) => ipfsHash),
             exhaustMap((ipfsHash: string) => 
               this.ipfsSrv.getFile(ipfsHash).pipe(
