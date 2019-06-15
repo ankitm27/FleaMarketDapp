@@ -48,8 +48,12 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
       },
     }),
 
-    
-    EffectsModule.forRoot(fromRootStore.effects),
+     /**
+     * @ngrx/router-store keeps router state up-to-date in the store.
+     */
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'router',
+      routerState: RouterState.Minimal, }),
 
     /**
      * Store devtools instrument the store retaining past versions of state
@@ -64,15 +68,12 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
     // Instrumentation must be imported after importing StoreModule (config is optional)
     StoreDevtoolsModule.instrument({
         name: 'FleaMarket DApp Store State',
-        logOnly: environment.production, // Restrict extension to log-only mode
+        // In a production build you would want to disable the Store Devtools
+        // logOnly: environment.production,
       }),
 
-    /**
-     * @ngrx/router-store keeps router state up-to-date in the store.
-     */
-    StoreRouterConnectingModule.forRoot({
-      stateKey: 'router',
-      routerState: RouterState.Minimal, }),
+      
+    EffectsModule.forRoot(fromRootStore.effects),
 
     CoreModule,
   ],
