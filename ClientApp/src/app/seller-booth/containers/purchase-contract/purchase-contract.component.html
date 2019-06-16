@@ -139,6 +139,10 @@
   
           </mat-card-content>
 
+          <mat-card-actions  fxLayout="row" fxLayoutAlign="end center" >
+              <button mat-flat-button color="warn" [disabled]="frmGroup.pristine || frmGroup.invalid"  (click)="onCreate()" class='margin-right--10'>Create Contract</button>
+          </mat-card-actions>
+
           <!-- 
   
           <mat-card-content>
