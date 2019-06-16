@@ -4,13 +4,9 @@
     <div fxLayout="row" fxLayoutAlign="center start">
   
       <mat-card fxFlex="60">
-        <mat-card-title class="text-center"
-          >Seller Booth Merchandiser
+        <mat-card-title class="text-center">
+            New Purchase Contract
         </mat-card-title>
-  
-        <mat-card-subtitle>
-          Create New Purchase Contract
-        </mat-card-subtitle>
   
         <form [formGroup]="frmGroup" novalidate>
   
@@ -38,7 +34,7 @@
               <mat-form-field [color]="'accent'" fxFlex>
                 <input matInput placeholder="Value in ether. Has to include 2 x price *" formControlName="etherValue" />
                 <span matPrefix>$ETH:&nbsp;&nbsp;</span>
-                <span matSuffix>(#.####)</span>
+                <span matSuffix>(#.###)</span>
                 <mat-error *ngIf="required('etherValue')">Value is required</mat-error>
                 <mat-error *ngIf="invalidPattern('etherValue')"
                   >Invalid ether value format</mat-error
