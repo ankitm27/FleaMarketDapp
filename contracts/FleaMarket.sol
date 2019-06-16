@@ -17,7 +17,7 @@ a / b becomes a.div(b)
 
 //based on https://remix.readthedocs.io/en/latest/tutorial_import.html
 //but for !!!truffle it has to be different way to use the import
-//import 'https://github.com/OpenZeppelin/zeppelin-solidity/contracts/math/SafeMath.sol';
+// import 'https://github.com/OpenZeppelin/zeppelin-solidity/contracts/math/SafeMath.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
 
@@ -31,7 +31,7 @@ contract FleaMarket {
 	//mapping key to address
 	mapping(string => address) elements;
     string[] keys;
-    
+
 	address public lastContractAddress;
 
     event newPurchaseContract(
@@ -43,37 +43,39 @@ contract FleaMarket {
 
 
 	// deploy a new purchase contract
-	function createPurchaseContract(string memory key, string memory title, string memory contractHash) 
+	function createPurchaseContract(string memory key, string memory title, string memory ipfxHash) 
 	        public payable returns(bool createResult)
 	{
-		/*
-		  When a new contract is created with the 'new' keyword, for example 
-		     Token token = new Token;
-		     
-          This line fires a transaction which deploys the child Token contract 
-          and returns the address for that contract.
-          In Solidity contracts are directly convertible to addresses. 
-          The newer compiler wants to see that explicitly, like return address(token);
-		*/
 		
-		SafeRemotePurchase c = (new SafeRemotePurchase).value(msg.value)(msg.sender, key, title, contractHash);
+    // payable for functions: Allows them to receive Ether together with a call.
+    /*
+        When a new contract is created with the 'new' keyword, for example 
+            Token token = new Token;
+            
+        This line fires a transaction which deploys the child Token contract 
+        and returns the address for that contract.
+        In Solidity contracts are directly convertible to addresses. 
+        The newer compiler wants to see that explicitly, like return address(token);
+    */
+		
+		SafeRemotePurchase c = (new SafeRemotePurchase).value(msg.value)(msg.sender, key, title, ipfxHash);
 		
 		/*
 		checking that the key is not taken already 
 		address(0) is the same as "0x0", an uninitialized! address.
 		*/
 		bool taken = elements[key] != address(0);
-		
+
 		require( !taken, "The key has been already taken");
-    	
+   
 		keys.push(key);
-		
+
 		lastContractAddress = address(c);
-		
+	
 		elements[key] = lastContractAddress;
 
 		emit newPurchaseContract(lastContractAddress);
-	    
+	
 		return true;
 	}
 	
@@ -95,25 +97,25 @@ contract FleaMarket {
        bool exists = elements[key] != address(0);
 		
 	   require(exists, "No asset data exists for this key");
-       
+    
        return elements[key];
     }
-	
+
 }
 
 
-//based on https://solidity.readthedocs.io/en/v0.5.6/solidity-by-example.html#safe-remote-purchase
+// based on https://solidity.readthedocs.io/en/latest/solidity-by-example.html
 contract SafeRemotePurchase {
-    
+
     using SafeMath for uint256;
-    
+
     address payable private seller;
     address payable public buyer;
     uint public price;
     string public key;  //unique string identifier
     string public title;
     string public ipfsHash;
-    
+
     enum State { Created, Locked, Inactive }
     State public state;
 
@@ -122,13 +124,13 @@ contract SafeRemotePurchase {
     // Division will truncate if it is an odd number.
     // Check via multiplication that it wasn't an odd number.
     constructor(
-        address payable _contractSeller, 
+        address payable _contractSeller,
         string memory _key,
         string memory _title,
-        string memory _contractHash) public payable {
+        string memory _ipfxHash) public payable {
         seller = _contractSeller;
         key = _key;
-        ipfsHash = _contractHash;
+        ipfsHash = _ipfxHash;
         title = _title;
         price = msg.value.div(2);
         require(price.mul(2) == msg.value, "Value has to be even.");
@@ -145,7 +147,7 @@ contract SafeRemotePurchase {
     }
 
     modifier onlySeller() {
-        require( msg.sender == seller, "Only seller can call this.");
+        require(msg.sender == seller, "Only seller can call this.");
         _;
     }
 
@@ -178,11 +180,11 @@ contract SafeRemotePurchase {
     {
         emit ItemReceived();
         state = State.Inactive;
-        
+    
         buyer.transfer(price);
         seller.transfer(balanceOf());
     }
-    
+
     // The seller has changed his mind and does not want to sell the item
     // Abort the purchase and reclaim the ether.
     // Can only be called by the seller if the contract is Inactive
@@ -191,7 +193,6 @@ contract SafeRemotePurchase {
     {
         emit Aborted();
         state = State.Inactive;
-        
         seller.transfer(balanceOf());
     }
 
@@ -199,5 +200,5 @@ contract SafeRemotePurchase {
     function balanceOf() view public returns(uint){
         return address(this).balance;
     }
-    
+
 }

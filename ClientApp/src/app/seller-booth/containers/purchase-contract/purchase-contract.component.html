@@ -19,6 +19,13 @@
               <span class="red-color">*</span>
               <div class="mat-caption text-muted">required fields</div>
             </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-form-field [color]="'accent'" fxFlex>
+                <input matInput placeholder="Product Key *" formControlName="key" />
+                <mat-error *ngIf="required('key')">Value is required</mat-error>
+              </mat-form-field>
+            </div>
   
             <div fxLayout="row" fxLayoutAlign="start center">
               <mat-form-field [color]="'accent'" fxFlex>
@@ -29,12 +36,12 @@
   
             <div fxLayout="row" fxLayoutAlign="start center">
               <mat-form-field [color]="'accent'" fxFlex>
-                <input matInput placeholder="Price *" formControlName="price" />
+                <input matInput placeholder="Value in ether. Has to include 2 x price *" formControlName="etherValue" />
                 <span matPrefix>$ETH:&nbsp;&nbsp;</span>
                 <span matSuffix>(#.####)</span>
-                <mat-error *ngIf="required('price')">Value is required</mat-error>
-                <mat-error *ngIf="invalidPattern('price')"
-                  >Invalid price format value</mat-error
+                <mat-error *ngIf="required('etherValue')">Value is required</mat-error>
+                <mat-error *ngIf="invalidPattern('etherValue')"
+                  >Invalid ether value format</mat-error
                 >
               </mat-form-field>
             </div>

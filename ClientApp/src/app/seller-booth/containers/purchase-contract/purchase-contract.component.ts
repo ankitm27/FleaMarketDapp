@@ -33,8 +33,9 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   ) {}
 
   frmGroup: FormGroup = this.formBuilder.group({
+    key: ['', Validators.required],
     title: ['', Validators.required],
-    price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+    etherValue: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
     fileArg: [
       '', [Validators.required, Validators.pattern(this.IMAGE_PATTERN)]
     ]
