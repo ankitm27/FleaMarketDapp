@@ -46,7 +46,7 @@ export interface State extends EntityState<PurchaseContractModel> {
      * exist already. If the collection is to be sorted, the adapter will
      * insert the new record into the sorted array.
      */
-    on(PurchaseContractActions.addProduct, (state, { product }) => adapter.addOne(product, state)),
+    on(PurchaseContractActions.addProductSuccess, (state, { product }) => adapter.addOne(product, state)),
     on(PurchaseContractActions.selectProduct, (state, { key }) => ({
       ...state,
       selectedProductKey: key,

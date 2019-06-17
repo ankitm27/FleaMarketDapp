@@ -1,11 +1,12 @@
 import {Component, ViewChild, ElementRef, OnInit, OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {MatDialog, MatDialogRef, MatDialogConfig} from '@angular/material';
+import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 import * as fromPurchaseContract from '../../store/reducers';
-import { IpfsUploadActions }  from '../../store/actions';
+import { IpfsUploadActions, PurchaseContractActions }  from '../../store/actions';
 import { FileUploadStatus} from '../../store/reducers/ipfs-upload.reducer';
 
 import { ShowIpfsImageComponent } from '../../components/show-ipfs-image/show-ipfs-image.component';
@@ -33,19 +34,23 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
   ) {}
 
   frmGroup: FormGroup = this.formBuilder.group({
-    key: ['', Validators.required],
+    productKey: ['', Validators.required],
     title: ['', Validators.required],
     etherValue: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,3})?$/)]],
     fileArg: [
       '', [Validators.required, Validators.pattern(this.IMAGE_PATTERN)]
-    ]
+    ],
+    ipfsHash: ['', Validators.required] // to hold ipfsHash value
   });
 
 
   ngOnInit() {
     
     this.uploadStatus$ = this.store$.pipe(select(fromPurchaseContract.getIpfsUploadStatus));
-    this.ipfsHash$ = this.store$.pipe(select(fromPurchaseContract.getIpfsHash));         
+    this.ipfsHash$ = this.store$.pipe(
+      select(fromPurchaseContract.getIpfsHash),
+      tap(value => this.frmGroup.get('ipfsHash').patchValue(value) )
+      );         
   }
 
   formControl = (name: string) => this.frmGroup.get(`${name}`);
@@ -112,15 +117,19 @@ export class PurchaseContractComponent implements OnInit, OnDestroy {
 
   onCreate(): void {
 
-    //const model = this.frmGroup.value;
-    // console.log('model', model);
-    //this.store.dispatch(new fromAttackChange.SetAttack(model.attack));
+    const { valid} = this.frmGroup;
+
+    if (valid) {
+        
+        const { fileArg, ...model } = this.frmGroup.value;
+        this.store$.dispatch(PurchaseContractActions.addProduct({data: model}));
+    }
+   
   }
 
 
   ngOnDestroy(): void {
-
-    // reset state
+    
     this.store$.dispatch(IpfsUploadActions.reset);
   }
 

@@ -4,7 +4,8 @@ import { PurchaseContractModel } from '../../models';
 
 export const loadProducts = createAction('[PurchaseContract/Command] Load Products');
 export const loadProductsSuccess = createAction('[PurchaseContract/API] Load Products', props<{ products: PurchaseContractModel[] }>());
-export const addProduct = createAction('[PurchaseContract/API] Add Product', props<{ product: PurchaseContractModel }>());
+export const addProduct = createAction('[PurchaseContract/API] Add Product Command', props<{ data: any }>());
+export const addProductSuccess = createAction('[PurchaseContract/API] Add Product Success', props<{ product: PurchaseContractModel }>());
 export const clearProducts = createAction('[PurchaseContract/View] Clear Products');
 export const selectProduct = createAction('[PurchaseContract/View] Select Product',
     props<{ key: string }>()
