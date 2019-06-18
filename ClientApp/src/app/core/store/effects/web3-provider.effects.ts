@@ -4,7 +4,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of, from, EMPTY as empty } from 'rxjs';
 import { exhaustMap, switchMap, map, tap, catchError } from 'rxjs/operators';
 
-import { MetamaskWeb3Provider } from '../../services/tokens';
+import { MetamaskWeb3Provider } from '../../services/tokens/web3-token';
 import { Web3ProviderService } from '../../services/web3-provider.services';
 import { Web3ProviderActions, SpinnerActions, ErrorActions } from '../actions';
 
