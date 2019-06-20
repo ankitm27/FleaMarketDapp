@@ -33,11 +33,10 @@
             <div fxLayout="row" fxLayoutAlign="start center">
               <mat-form-field [color]="'accent'" fxFlex>
                 <input matInput placeholder="Value in ether. Has to include 2 x price *" formControlName="etherValue" />
-                <span matPrefix>$ETH:&nbsp;&nbsp;</span>
-                <span matSuffix>(#.###)</span>
+                <span matSuffix>$ETH</span>
                 <mat-error *ngIf="required('etherValue')">Value is required</mat-error>
                 <mat-error *ngIf="invalidPattern('etherValue')"
-                  >Invalid ether value format</mat-error
+                  >Invalid ether value format. Has to be (#.###)</mat-error
                 >
               </mat-form-field>
             </div>
@@ -47,7 +46,7 @@
            
           <mat-card-actions>
               <button mat-raised-button color="primary" (click)="selectFile()">
-                Select Product Image
+                Select Product Photo
                 <mat-icon>category</mat-icon>
               </button>
               
