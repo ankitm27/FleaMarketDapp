@@ -11,7 +11,7 @@
     >
       <mat-toolbar>Menu</mat-toolbar>
       <mat-nav-list>
-          <a mat-list-item *ngFor="let item of nav"
+          <a mat-list-item class='margin-top-bottom--12' *ngFor="let item of nav"
           [routerLink]="item.link"
           routerLinkActive="active-link"
           [routerLinkActiveOptions]="{ exact: item.exact }">

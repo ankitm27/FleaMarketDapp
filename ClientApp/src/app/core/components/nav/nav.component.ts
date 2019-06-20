@@ -17,21 +17,16 @@ export class NavComponent implements OnInit {
     {
       link: '/dashboard',
       name: 'Home',
-      img_src: './assets/img/home-24.png',
+      img_src: './assets/img/home-start-32.png',
       exact: true
     },
     {
       link: '/seller-booth',
-      name: 'I am Seller',
-      img_src: './assets/img/seller-24.png',
+      name: 'p2p Bazaar',
+      img_src: './assets/img/negotiation-64.png',
       exact: true
     },
-    {
-      link: '/buyer',
-      name: 'I am Buyer',
-      img_src: './assets/img/buyer-24.png',
-      exact: true
-    }
+    
   ];
 
   account$: Observable<string>;
