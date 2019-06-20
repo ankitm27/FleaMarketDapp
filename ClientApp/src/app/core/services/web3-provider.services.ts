@@ -6,9 +6,7 @@ import { ethers, Signer } from 'ethers';
 import { Observable, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-    @Injectable({
-      providedIn: 'root'
-    })  
+@Injectable({providedIn: 'root'})  
 export class Web3ProviderService {
 
    private signer: Signer;

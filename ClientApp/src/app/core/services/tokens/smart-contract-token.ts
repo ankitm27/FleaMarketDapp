@@ -1,6 +1,6 @@
 
 import { Injectable, InjectionToken, Inject } from '@angular/core';
-import { providers } from 'ethers';
+import { Contract } from 'ethers';
 import { Provider } from './web3-token';
 
 const FLEA_MARKET_CONTRACT_ADDRESS = '0x2a081bb468e1502260796271FFC7dD0CC92e255C'
@@ -13,6 +13,15 @@ const abi = [
   'function getElementByKey(string memory key) view returns(address contractAddress)'
 
 ];
+
+@Injectable({ providedIn: 'root' })
+export class FleaMarketContract extends Contract {
+  constructor(provider: Provider) {
+    super(FLEA_MARKET_CONTRACT_ADDRESS, abi, provider.getSigner());
+  }
+}
+
+
 
 
 
