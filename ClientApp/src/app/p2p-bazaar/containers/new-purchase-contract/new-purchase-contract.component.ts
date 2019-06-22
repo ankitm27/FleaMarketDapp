@@ -12,11 +12,11 @@ import { FileUploadStatus} from '../../store/reducers/ipfs-upload.reducer';
 import { ShowIpfsImageComponent } from '../../components/show-ipfs-image/show-ipfs-image.component';
 
 @Component({
-  selector: 'app-new-purchase',
-  templateUrl: './purchase-contract.component.html',
-  styleUrls: ['./purchase-contract.component.css']
+  selector: 'app-new-purchase-contract',
+  templateUrl: './new-purchase-contract.component.html',
+  styleUrls: ['./new-purchase-contract.component.css']
 })
-export class PurchaseContractComponent implements OnInit, OnDestroy {
+export class NewPurchaseContractComponent implements OnInit, OnDestroy {
 
   @ViewChild('file', {static: false}) fileControl: ElementRef;
   fileBlob: File;

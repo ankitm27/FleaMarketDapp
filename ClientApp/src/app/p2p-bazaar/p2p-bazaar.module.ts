@@ -9,21 +9,40 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './store/reducers';
 import { IpfsUploadEffects } from './store/effects/ipfs-upload.effects';
 
-import { PurchaseContractComponent } from './containers/purchase-contract/purchase-contract.component';
+import * as fromContainers from './containers';
 import { ShowIpfsImageComponent } from './components/show-ipfs-image/show-ipfs-image.component'
 
 const routes: Routes = [
   {
-      path: '',
-      component: PurchaseContractComponent,
+    path: '',
+    // component: fromContainers.PurchaseContractCollectionComponent,
+    // canActivate: [fromGuards.ProjectsInitialLoadGuard],
   },
+  {
+      path: 'new',
+      component: fromContainers.NewPurchaseContractComponent,
+  },
+  {
+      path: ':id',
+      // component: fromContainers.SelectPurchaseContractComponent,
+      // we need to make sure this guard is triggered when we link /projects/id;source=table clicked from email
+      // canActivate: [fromGuards.ProjectExistsGuard],  
+  }
 
-];
+  ];
+
+  export const CONTAINERS = [
+    fromContainers.NewPurchaseContractComponent,
+    
+  ];
+
+  export const COMPONENTS = [
+    ShowIpfsImageComponent,
+  ];
+  
 
 @NgModule({
-  declarations: [
-    PurchaseContractComponent,
-    ShowIpfsImageComponent],
+  declarations: [COMPONENTS, CONTAINERS],
 
   
   /*based on https://alligator.io/angular/anatomy-angular-module/
@@ -49,4 +68,4 @@ const routes: Routes = [
     EffectsModule.forFeature([IpfsUploadEffects])
   ],
 })
-export class SellerBoothModule { }
+export class P2pBazaarModule { }

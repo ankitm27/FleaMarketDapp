@@ -11,12 +11,33 @@
     >
       <mat-toolbar>Menu</mat-toolbar>
       <mat-nav-list>
-          <a mat-list-item class='margin-top-bottom--12' *ngFor="let item of nav"
-          [routerLink]="item.link"
-          routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: item.exact }">
-          <img src="{{item.img_src}}">{{item.name}}
-       </a>
+        
+        <h3 matSubheader class='margin-top-bottom--12'>
+          <a [routerLink]="nav['home'].link" routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: nav['home'].exact }"> 
+            <img src="{{nav['home'].img_src}}">{{nav['home'].name}}
+          </a>
+        </h3>
+        <mat-divider></mat-divider>
+
+        <h3 matSubheader class='margin-top-bottom--12'>
+           <img src="{{nav['p2p_bazaar'].img_src}}">{{nav['p2p_bazaar'].name}}
+        </h3>
+        <mat-list-item>
+          <a [routerLink]="nav['p2p_bazaar_shopping'].link" routerLinkActive="active-link"
+              [routerLinkActiveOptions]="{ exact: nav['p2p_bazaar_shopping'].exact }"> 
+              <img src="{{nav['p2p_bazaar_shopping'].img_src}}">{{nav['p2p_bazaar_shopping'].name}}
+        </a>
+        </mat-list-item>
+        <mat-list-item>
+            <a [routerLink]="nav['contract_new'].link" routerLinkActive="active-link"
+                [routerLinkActiveOptions]="{ exact: nav['contract_new'].exact }"> 
+                <img src="{{nav['contract_new'].img_src}}">{{nav['contract_new'].name}}
+          </a>
+        </mat-list-item>
+          
+        <mat-divider></mat-divider>
+       
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>

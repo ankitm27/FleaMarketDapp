@@ -13,9 +13,9 @@ export const routes: Routes = [
     component: DashboardComponent,
   },
   {
-    path: 'seller-booth',
+    path: 'p2p-bazaar',
     // here we use the TypeScript Dynamic Imports in Angular 8
-    loadChildren: () => import('./seller-booth/seller-booth.module').then(mod => mod.SellerBoothModule),
+    loadChildren: () => import('./p2p-bazaar/p2p-bazaar.module').then(mod => mod.P2pBazaarModule),
     canActivate: [guards.EthInitGuard],
   },
   { path: '**', component: NotFoundPageComponent }, // !!!has to be the last one 
